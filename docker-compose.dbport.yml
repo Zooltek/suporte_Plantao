@@ -1,0 +1,22 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# docker-compose.dbport.yml — OVERLAY OPT-IN (acesso externo ao MySQL)
+#
+# Por padrão o MySQL fica acessível apenas pela rede interna do Docker
+# (`plantao12_net`) — ver docker-compose.dev.yml. Este overlay publica a porta
+# do MySQL no host para quem precisa conectar com ferramentas externas
+# (DBeaver, MySQL Workbench, etc.).
+#
+# Ajuste DB_HOST_PORT no .env se a 3306 já estiver ocupada na sua máquina.
+#
+# Uso:
+#   make dev DB_EXPOSE=1
+#   # ou manualmente:
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml \
+#     -f docker-compose.dbport.yml up -d
+# ──────────────────────────────────────────────────────────────────────────────
+
+services:
+  plantao12_mysql:
+    ports:
+      - "${DB_BIND_ADDRESS:-127.0.0.1}:${DB_HOST_PORT:-3306}:3306"
+

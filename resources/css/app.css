@@ -1,0 +1,478 @@
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+@import '@fontsource/lato/100.css';
+@import '@fontsource/lato/300.css';
+@import '@fontsource/lato/400.css';
+@import '@fontsource/lato/700.css';
+
+@import '@fontsource/inter/300.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+@import '@fontsource/inter/800.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --bg-color: #ffffff;
+        --text-color: #212529;
+        --border-color: #e5e7eb;
+        --card-bg: #ffffff;
+        --input-bg: #ffffff;
+    }
+
+    body {
+        @apply transition-colors duration-300;
+        /* Usando utilitários Tailwind */
+        background-color: var(--bg-color);
+        color: var(--text-color);
+    }
+
+    /* Transição suave para elementos comuns */
+    body, main, header, footer, aside, section,
+    div, span, p, h1, h2, h3, h4, h5, h6,
+    input, select, textarea, button, a,
+    table, th, td, tr,
+    .bg-white, .bg-gray-50, .card, .modal-content, .dropdown-menu {
+        transition-property: background-color, border-color, color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
+    }
+
+    /* Estilos globais para o tema ocean */
+    html.ocean {
+        --bg-color: #0f172a;
+        --text-color: #f1f5f9;
+        --border-color: #334155;
+        --card-bg: #1e293b;
+        --input-bg: #1e293b;
+
+        /* Compatibilidade com Bootstrap */
+        --bs-body-bg: var(--bg-color);
+        --bs-body-color: var(--text-color);
+        --bs-tertiary-bg: #1e293b;
+        --bs-border-color: var(--border-color);
+
+        /* Background principal */
+        body,
+        main,
+        .bg-gray-50,
+        .bg-white {
+            background-color: var(--bg-color) !important;
+            color: var(--text-color) !important;
+        }
+
+        /* Títulos e Textos */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .text-gray-800,
+        .text-gray-900 {
+            color: var(--text-color) !important;
+        }
+
+        .text-gray-500,
+        .text-gray-600 {
+            color: #94a3b8 !important;
+            /* Slate-400 */
+        }
+
+        /* Cards e containers */
+        .card,
+        .bg-white {
+            background-color: var(--card-bg) !important;
+            border-color: var(--border-color) !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        /* Inputs e forms */
+        input:not([type="checkbox"]):not([type="radio"]),
+        textarea,
+        select {
+            background-color: #0f172a !important;
+            /* Mais escuro que o card */
+            color: var(--text-color) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #3b82f6 !important;
+            /* Azul */
+            box-shadow: 0 0 0 1px #3b82f6 !important;
+        }
+
+        /* Tables - Refinamento */
+        table {
+            color: var(--text-color) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        table thead th {
+            background-color: #1e293b !important;
+            /* Slate-800 */
+            color: #e2e8f0 !important;
+            /* Slate-200 */
+            border-bottom-color: var(--border-color) !important;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        table tbody tr {
+            background-color: var(--card-bg) !important;
+            border-bottom-color: var(--border-color) !important;
+        }
+
+        table tbody tr:hover {
+            background-color: #334155 !important;
+            /* Slate-700 */
+        }
+
+        /* Botões de Ação na Tabela */
+        .admin-icon-btn {
+            background-color: transparent !important;
+            border-color: var(--border-color) !important;
+        }
+
+        .admin-icon-btn:hover {
+            background-color: #334155 !important;
+        }
+
+        /* Navegação Sidebar */
+        aside {
+            background-color: #020617 !important;
+            /* Slate-950 - Bem escuro */
+            border-right: 1px solid var(--border-color);
+        }
+
+        /* Headers */
+        header {
+            background-color: var(--card-bg) !important;
+            border-bottom-color: var(--border-color) !important;
+        }
+
+        /* Modals */
+        .modal-content {
+            background-color: var(--card-bg) !important;
+            border: 1px solid var(--border-color) !important;
+        }
+
+        /* Dropdowns */
+        .dropdown-menu {
+            background-color: var(--card-bg) !important;
+            border: 1px solid var(--border-color) !important;
+        }
+
+        .dropdown-item {
+            color: var(--text-color) !important;
+        }
+
+        .dropdown-item:hover {
+            background-color: #334155 !important;
+            color: white !important;
+        }
+    }
+}
+/* Correções Finais UI/UX Dark Mode e Scrollbar */
+html.ocean {
+    /* Background principal forçado */
+    body, main, .bg-gray-50, .bg-white, .min-h-screen {
+        background-color: #0f172a !important;
+        color: #f1f5f9 !important;
+    }
+
+    /* Scrollbar */
+    scrollbar-color: #334155 #0f172a;
+}
+
+html.ocean ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+html.ocean ::-webkit-scrollbar-track {
+    background: #0f172a; 
+}
+
+html.ocean ::-webkit-scrollbar-thumb {
+    background: #334155; 
+    border-radius: 5px;
+}
+
+html.ocean ::-webkit-scrollbar-thumb:hover {
+    background: #475569; 
+}
+
+/* Correção Botão Cancelar Modal */
+html.ocean .btn-secondary,
+html.ocean .btn-light,
+html.ocean button[type="button"].bg-gray-200,
+html.ocean button[type="button"].bg-white {
+    background-color: #334155 !important; /* Slate-700 */
+    color: #f1f5f9 !important; /* Slate-100 */
+    border-color: #475569 !important;
+}
+
+html.ocean .btn-secondary:hover,
+html.ocean .btn-light:hover,
+html.ocean button[type="button"].bg-gray-200:hover,
+html.ocean button[type="button"].bg-white:hover {
+    background-color: #475569 !important; /* Slate-600 */
+    color: white !important;
+}
+
+/* Correção Inputs Disabled/Readonly no Modo Ocean */
+html.ocean input:disabled,
+html.ocean input[readonly],
+html.ocean textarea:disabled,
+html.ocean textarea[readonly],
+html.ocean select:disabled {
+    background-color: #1e293b !important; /* Slate-800 - Levemente mais claro que o input normal */
+    color: #94a3b8 !important; /* Slate-400 - Texto legível, indicando estado desabilitado */
+    border-color: #334155 !important;
+    opacity: 1 !important; /* Forçar opacidade para evitar transparência excessiva do browser */
+    -webkit-text-fill-color: #94a3b8 !important; /* Correção para Safari/Chrome */
+}
+
+/* Correção Agressiva para Botões Cancelar com Classes Tailwind */
+html.ocean button[class*="bg-gray-200"],
+html.ocean a[class*="bg-white"],
+html.ocean button[class*="bg-white"] {
+    background-color: #334155 !important;
+    color: #f1f5f9 !important;
+    border-color: #475569 !important;
+    box-shadow: none !important;
+}
+
+html.ocean button[class*="bg-gray-200"]:hover,
+html.ocean a[class*="bg-white"]:hover,
+html.ocean button[class*="bg-white"]:hover {
+    background-color: #475569 !important;
+    color: #ffffff !important;
+}
+
+/* Correção de Texto Gray-700 e Backgrounds Gray-50 */
+html.ocean .text-gray-700 {
+    color: #e2e8f0 !important; /* Slate-200 */
+}
+
+html.ocean .text-gray-800 {
+    color: #f1f5f9 !important; /* Slate-100 */
+}
+
+html.ocean .text-gray-900 {
+    color: #f8fafc !important; /* Slate-50 */
+}
+
+html.ocean .text-gray-600 {
+    color: #cbd5e1 !important; /* Slate-300 */
+}
+
+html.ocean .text-gray-500 {
+    color: #94a3b8 !important; /* Slate-400 */
+}
+
+html.ocean .text-gray-400 {
+    color: #94a3b8 !important; /* Slate-400 — labels e meta-info */
+}
+
+html.ocean .bg-gray-50 {
+    background-color: #1e293b !important; /* Slate-800 - Destaque sutil sobre o fundo principal */
+    border-color: #334155 !important;
+}
+
+/*
+ * Badges com fundo Tailwind claro (bg-*-100 / bg-*-50) precisam manter o texto
+ * escuro original em dark mode — caso contrário o override genérico de
+ * text-gray-* acima deixa o conteúdo ilegível (ex.: badge "Pendente" sumindo
+ * na Timeline e nos cards de agendamento). A especificidade dupla (.bg-x.text-y)
+ * vence a regra simples .text-y.
+ */
+html.ocean .bg-gray-100.text-gray-500,
+html.ocean .bg-gray-100.text-gray-600,
+html.ocean .bg-gray-100.text-gray-700,
+html.ocean .bg-gray-100.text-gray-800,
+html.ocean .bg-gray-100.text-gray-900 {
+    color: #1f2937 !important; /* gray-800 */
+}
+
+/*
+ * Botões (:not(button)) ficam de fora desta proteção. Um botão secundário
+ * declara o próprio par dark:bg-slate-700 / dark:text-slate-100; sem a exclusão,
+ * o !important abaixo anula o dark:text-slate-100 e o texto assume #334155 — a
+ * mesma cor do fundo dark:bg-slate-700 — tornando o rótulo invisível (ex.: botão
+ * "Cancelar" do painel de fechamento de chamado). Badges são span/div, então
+ * continuam protegidos.
+ */
+html.ocean .bg-slate-100.text-slate-500:not(button),
+html.ocean .bg-slate-100.text-slate-600:not(button),
+html.ocean .bg-slate-100.text-slate-700:not(button) {
+    color: #334155 !important; /* slate-700 */
+}
+
+html.ocean .bg-amber-50.text-amber-700,
+html.ocean .bg-amber-50.text-amber-800,
+html.ocean .bg-amber-100.text-amber-700,
+html.ocean .bg-amber-100.text-amber-800 {
+    color: #b45309 !important; /* amber-700 */
+}
+
+html.ocean .bg-orange-50.text-orange-700,
+html.ocean .bg-orange-50.text-orange-800,
+html.ocean .bg-orange-100.text-orange-700,
+html.ocean .bg-orange-100.text-orange-800 {
+    color: #c2410c !important; /* orange-700 */
+}
+
+html.ocean .bg-yellow-50.text-yellow-700,
+html.ocean .bg-yellow-50.text-yellow-800,
+html.ocean .bg-yellow-100.text-yellow-700,
+html.ocean .bg-yellow-100.text-yellow-800 {
+    color: #a16207 !important; /* yellow-700 */
+}
+
+html.ocean .bg-blue-50.text-blue-700,
+html.ocean .bg-blue-50.text-blue-800,
+html.ocean .bg-blue-100.text-blue-700,
+html.ocean .bg-blue-100.text-blue-800 {
+    color: #1d4ed8 !important; /* blue-700 */
+}
+
+html.ocean .bg-sky-50.text-sky-700,
+html.ocean .bg-sky-100.text-sky-700 {
+    color: #0369a1 !important; /* sky-700 */
+}
+
+html.ocean .bg-indigo-50.text-indigo-700,
+html.ocean .bg-indigo-50.text-indigo-800,
+html.ocean .bg-indigo-100.text-indigo-700,
+html.ocean .bg-indigo-100.text-indigo-800 {
+    color: #4338ca !important; /* indigo-700 */
+}
+
+html.ocean .bg-emerald-50.text-emerald-700,
+html.ocean .bg-emerald-50.text-emerald-800,
+html.ocean .bg-emerald-100.text-emerald-700,
+html.ocean .bg-emerald-100.text-emerald-800 {
+    color: #047857 !important; /* emerald-700 */
+}
+
+html.ocean .bg-green-50.text-green-700,
+html.ocean .bg-green-50.text-green-800,
+html.ocean .bg-green-100.text-green-700,
+html.ocean .bg-green-100.text-green-800 {
+    color: #15803d !important; /* green-700 */
+}
+
+html.ocean .bg-teal-50.text-teal-700,
+html.ocean .bg-teal-100.text-teal-700 {
+    color: #0f766e !important; /* teal-700 */
+}
+
+html.ocean .bg-red-50.text-red-600,
+html.ocean .bg-red-50.text-red-700,
+html.ocean .bg-red-50.text-red-800,
+html.ocean .bg-red-100.text-red-600,
+html.ocean .bg-red-100.text-red-700,
+html.ocean .bg-red-100.text-red-800 {
+    color: #b91c1c !important; /* red-700 */
+}
+
+html.ocean .bg-rose-50.text-rose-700,
+html.ocean .bg-rose-100.text-rose-700 {
+    color: #be123c !important; /* rose-700 */
+}
+
+html.ocean .bg-pink-50.text-pink-700,
+html.ocean .bg-pink-100.text-pink-700 {
+    color: #be185d !important; /* pink-700 */
+}
+
+html.ocean .bg-purple-50.text-purple-700,
+html.ocean .bg-purple-100.text-purple-700 {
+    color: #7e22ce !important; /* purple-700 */
+}
+
+/* -------------------------------------------------------------
+   Ocean Theme (Dark Mode) - Melhorias de Contraste e Hover
+   ------------------------------------------------------------- */
+
+/* 1. Dropdown de Empresas / Clientes e Hovers de Linha */
+html.ocean .hover\:bg-indigo-50:hover,
+html.ocean .hover\:bg-indigo-50\/40:hover,
+html.ocean .hover\:bg-indigo-50\/50:hover,
+html.ocean .hover\:bg-indigo-50\/60:hover,
+html.ocean .hover\:bg-indigo-50\/80:hover,
+html.ocean .hover\:bg-gray-50:hover,
+html.ocean .hover\:bg-gray-100:hover,
+html.ocean .hover\:bg-gray-100\/80:hover,
+html.ocean .hover\:bg-orange-50:hover,
+html.ocean .hover\:bg-orange-50\/50:hover,
+html.ocean .hover\:bg-orange-50\/80:hover,
+html.ocean .hover\:bg-amber-50:hover,
+html.ocean .hover\:bg-amber-50\/50:hover {
+    background-color: #334155 !important; /* slate-700 */
+}
+
+/* 2. Abas Rápidas de Navegação (Index de Chamados: Meus Chamados / Sem Agente / Todos) */
+html.ocean a.bg-indigo-50 {
+    background-color: rgba(30, 27, 75, 0.75) !important; /* indigo-950 */
+    color: #a5b4fc !important; /* indigo-300 */
+    border-color: #4338ca !important; /* indigo-700 */
+}
+html.ocean a.bg-indigo-50 svg {
+    color: #a5b4fc !important;
+}
+
+html.ocean a.bg-amber-50 {
+    background-color: rgba(69, 26, 3, 0.75) !important; /* amber-950 */
+    color: #fcd34d !important; /* amber-300 */
+    border-color: #b45309 !important; /* amber-700 */
+}
+html.ocean a.bg-amber-50 svg {
+    color: #fcd34d !important;
+}
+
+/* 3. Central de Ajuda & Manual (helper.blade.php) */
+html.ocean .bg-gray-100\/90 {
+    background-color: #0f172a !important; /* slate-900 */
+    border-color: #334155 !important;
+}
+
+html.ocean .bg-gray-50\/70,
+html.ocean .bg-gray-50\/80 {
+    background-color: #1e293b !important; /* slate-800 */
+    border-color: #334155 !important;
+}
+
+html.ocean .bg-orange-50\/80,
+html.ocean .bg-orange-50\/60,
+html.ocean .bg-orange-50\/50,
+html.ocean .bg-orange-50\/40,
+html.ocean .bg-purple-50\/60,
+html.ocean .bg-purple-50\/50,
+html.ocean .bg-sky-50\/60,
+html.ocean .bg-sky-50\/50,
+html.ocean .bg-emerald-50\/50 {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+html.ocean .text-orange-950,
+html.ocean .text-purple-950,
+html.ocean .text-purple-900,
+html.ocean .text-emerald-950,
+html.ocean .text-emerald-900,
+html.ocean .text-sky-950 {
+    color: #cbd5e1 !important; /* slate-300 */
+}
+

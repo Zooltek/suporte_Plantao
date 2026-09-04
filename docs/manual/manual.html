@@ -1,0 +1,2049 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Manual do Usuário — Amura Sistemas</title>
+<style>
+/* =========================================================
+   PALETA — Amura Sistemas
+   --primary  Laranja Amura   #F26522
+   --secondary Roxo Amura     #452463
+   --info     Azul Amura      #0095EB
+   ========================================================= */
+:root{
+  --primary:#F26522;
+  --primary-soft:#FFF3E6;
+  --secondary:#452463;
+  --secondary-soft:#F2EAF7;
+  --info:#0095EB;
+  --info-soft:#E6F4FE;
+  --warning:#F26522;
+  --tip:#452463;
+  --text:#1F1F1F;
+  --text-soft:#313D41;
+  --muted:#626262;
+  --line:#E5E5E5;
+  --bg:#FAFAFA;
+  --bg-soft:#F4F4F4;
+  --white:#FFFFFF;
+}
+
+/* ============================
+   PAGE SETUP (A4 + headers)
+   ============================ */
+@page {
+  size: A4;
+  margin: 22mm 17mm 20mm 17mm;
+  @top-right {
+    content: "Manual do Usuário · Sistema de Suporte";
+    font-family: 'Open Sans', sans-serif;
+    font-size: 8pt;
+    color: #626262;
+    vertical-align: bottom;
+    padding-bottom: 3mm;
+  }
+  @bottom-left {
+    content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFUAAAAWCAYAAACxOdCYAAAJ4ElEQVR4nO2YbYxdxXnHf8/MOefeu3f9thiMS1zzEkiypEkkoqASUUgJTVCsfqi6UaCpMLEVoVIi1MAHqoi1K1Wljao2kVL6AaqkVWqMlVDRFyktCnIqksYY5BDvggG7wRgjv2Ls3b33nntm/v1wz9k9vl5sQ5V+qHikuefOM8/7PDPPzMA5QGDnonkPzgICE9hLn31/Y2ZD6y+P3j6yAUB6L7DvBNxpvUm8gVZe/Pqd7WXFHy3N+g8f+P0lV2GgySHadwbGO8/4s/H8Mif5bLLPS+98oATGJsLuiQtHm664L8yonyZi1PfvNxDT78oRX+pQ2aq+L1sl02q4anyYByBZMHeepw51OcP2+lqr+++HeLSIzLreYR5Xo3OAW8i+SbwZurg9s6HV0iVFwIo+sZWGW1+7deWVbCO+w2x1QAAi0CgNqPqhbJUDquGq8aTkq3AGFCV9q8ZTh7qc4eCEWqsgDuEFNId8UE1vcxGeWNMdgejKnrGJsOuLq9ojrrg3FoMZCSJmmRpLGjOLZOuku+GGyWSSycUC7YDovV9nZv8GTJnZ82b29SRJrge2AFuzLPsQQJqmHwW2Alu89zeZ2TcN221mU2a2LU3TqwE55x4ws2fMbLeZ7XDO3V3qq7LvI6WcrUmSfHxo7AFgq5ltqtl5b0n/gHPuC2b2NPCCmX2nCvpSlo6Z2dfNbBew28ye9N7f4pz7GrDVOXf/gLRxRZIkk86lXx6EeHKQ3kdvb31FdyXqbkiK3sZE3Y1JzDcmsbcx7e7/4oXvF9hjE/iJiYnhZVcHD+Ccu4eFJTzfDDtZ/ffe/yaA937d/LjZ7Bk8ZgfLyTlTntmf1nTfUpP9uyUuLb87SvrnavRPspBhdZk/AGi1Wr9iZlOL6WWQvTKzH5f+/qFz7gnn3LZkPkv3rmq3kuNVlhqDH4uiaDTVGO2fut9wG/RYjJ+3bfqtK9avSX37tr66T/37y4/sgEkHmwFCmqa/1u/3/6o0NpjZo2a2V9JNkq4HcsCZWb90Li+NjJJGzOxx4AXgdyR9QNJqYLVhv8B4FHifpC8AJvHVVqv1UKfTOcBgORY1mXV4qxx7q4Y7VeIccMzMvguMmNlOSXS73b+WNF4Gbxr4HnCBpDsYbAXz8pxzP5V0uZkdScq9tDh++8kvjTS1ptclmNU2c8PnXRfbWfg9PRg3X3nBN0587qrd9+WRP/A+Hevn3f8Cfr2kdkAsiuKOqu+cuyvG+LeSADab2T9L+hynV/f5YmBm35G0vsyUb3U63Z+DlgEns0Z2c6/Xe6Wkm5F0J8h3Op21wIFSf1KTWQdfjg0XqgToJkny20VR/ARAEi1al3TUXQdEM5uSxj4Jx04BeO//KYTwr0BWCSqK4hlgF9B3bCLsXLd6pJEU99WzFCDKYcKyLDefWLblXz69ZdXSF59zLv0axLG86BaYHQOYYHq+ckr6MIOlvj/G+HDpSKuM8jcWcXjBS+eeKJ1tdTqdgwYvAt7MXigD2ir7PypZquV4Nng7fRXf/jKgVXG0Dp0PgVoMVtRDZUBbQBpCeNLMdpS8VeFLgT5AYoaOrD+xfqTFml5nkKXSwIZmlhPk4q79H4vbf3ajjpxYdd3Ki15lpugWTk7Ou1QFLwEcvmHc2D5fCavjSZfBEkkYbAXezOYWceq0uJa0BWBCFU2fhRNAYGGvrAesmtjqW2Vmn4Uq/XbBTVjYOlSTD5GZUk51CgGYHZIxLz/ZuW71SMuO3hsLSZghaKR9MLTnjQ8WTz1/o+17/VLvXWEjlsdVM6OcXN5LfBgYIMd/DwfEzF6VJKHLvfefCiE8VRkcQrh1KAhng3rQh8+QZ0xIQjJbUBhAuRc+Uek1s8s02IOKt5FRP96Rke3NyQPgZLoN8Q+UWdloNC7t9fJraz6fbsdlK9+8s93gsm5uRZb2vUsIrx65NPzwZ5/ixVev9Ca5VjaLsJjLceHcKK+3T8au78vFEA23D+Ci7dPzBjrntoQQ7gCIMf6jc+5PzGxvjPGzku5ioTjUoX7eq0O9Oi+Gn+ctKKYNe0toNEZ91Tl3otT7JUlrGUzMznPIjoDLyV82s59Kuk7SZ8zsu865v5e0Ms/zPwYt522yP2m4+AAu0myG5I03f5Xtu3/DT+272sfCM5r1ACE1YPAuQCrH2tkx9qw46kyGFdoPMM54ZaALIfyHmX1b0npJF0v6m2G9AJKqwLoqyJKGj2tZOZYN4RNOv80AHDVnf6aoB0ErY9RD9fQ2s0NNNb/ZoVNtMZXsxiKxUZIkX+n3ix+BRiTdFkK4bYhmMbtICtkTc/3m9dunbsyf/vm1Sa+b+VZjjiST8nn/FiakMBiba8al7aY/6eemxvJlrwC2mc315eMkbTCz14ANki4qnXrazL4fY7yHwf7aKfFzwP7BX5upyYFBVV9dfufxZnYSeK3sdyt/Yox/7pybk3S3pDUCb9gsxo/TNL2vk3cOXAPpswOnDpYyfjEUlwi4fr//bJIkN4UQ/kLSNUAT7Jhz9i1JH5X08Zpd82AAE+OPZdumJ5hgExMT25iamoDpYdIBTAPjwARX82E+P3wWPAPGGFt6Kj211szyPM/3lOhmGYyqgDgWCsNwUUlZuOL2a/g6T17KYxLc5gF/evmK9ANXtDX27LF07/FO5/WazwIYHyebHvgpQYHADFXPnQaq/mRZ4/JeL7ZXtbNDh2dnD6u8+18DevZ0uxae9ezdvfuci2uxm9f/5rXrvOAHN9PWJE7C6cHW+wB2TzA6eQOJwOY2JtdrcrBs9Rheqj0sTc6fc9HE6Us7qXlrgO5edNsYBEXvOqbnPB9WOirxsYYb5l8MV8efbUyaxNlmYm9j+jER10bZ0VNFsdfHbEUzVTPxcU3A3oix2N9M/D15YY+7ojgcvL8aYW0XninwH4mm1U42ExyFSW0p2XVK+YGm3DrJeolTKybxh0n0n5DoRYXn23/HwTKGgjJrbPG77fm084H515sh3GLVfDGZZ9N3Bt5MyxDR8IdGm/h2M1ySJVriI7krimNLHuFQCDzdfqTYQZKsayd2qN2yE73or4umFdlb8VFhB4gUjYfjFu/ClaPmP5lk8SdLvx2+7x2+HbLlJjW9uSMj+eCaajU7fulL8f8MNg+cSvNiD96/7IifcH3/wcQIvVDsieZe8z79tNY31yAyTdDyFvO+yPp9etHCc4rWBUL07qQzOw4QIsKQI12mLzMiueWzRf5m5tOdweKKXtPfApz2iP//J6gl9BrZcq9wVVR8IxJe6BfpvpRszFm8IhBfYUn3sJnb113qr01DfDxKYyHqglbCCRL/EuOo79LjqUsOApi5fcdd+E/149pe9DfLaTpE+j0VVyWRTGkYvHptPu+V+x68G/gfk/zBOM+PakMAAAAASUVORK5CYII=");
+    vertical-align: top;
+    padding-top: 3mm;
+  }
+  @bottom-center {
+    content: "amura sistemas · v2.0";
+    font-family: 'Open Sans', sans-serif;
+    font-size: 8pt;
+    color: #F26522;
+    font-weight: 700;
+    vertical-align: top;
+    padding-top: 3.5mm;
+  }
+  @bottom-right {
+    content: "Página " counter(page) " de " counter(pages);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 8.5pt;
+    color: #626262;
+    vertical-align: top;
+    padding-top: 3.5mm;
+  }
+}
+
+/* ============================
+   BASE TYPOGRAPHY
+   ============================ */
+*{ box-sizing: border-box; }
+html, body{
+  margin: 0;
+  padding: 0;
+  font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+  color: var(--text);
+  font-size: 11pt;
+  line-height: 1.55;
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+}
+p{ margin: 0 0 9pt 0; text-align: justify; hyphens: auto; }
+
+h1, h2, h3, h4, h5{
+  font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+  color: var(--secondary);
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 8pt 0;
+}
+h1{ font-size: 22pt; color: var(--primary); margin-top: 6pt; }
+h2{ font-size: 16pt; color: var(--secondary); margin-top: 16pt; border-bottom: 2px solid var(--primary); padding-bottom: 4pt; }
+h3{ font-size: 13pt; color: var(--secondary); margin-top: 12pt; }
+h4{ font-size: 11pt; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 10pt; }
+
+a{ color: var(--info); text-decoration: none; }
+a:hover{ text-decoration: underline; }
+
+ul, ol{ margin: 4pt 0 10pt 0; padding-left: 20pt; }
+ul li, ol li{ margin-bottom: 3pt; }
+ol > li{ padding-left: 4pt; }
+ol > li::marker{ color: var(--primary); font-weight: 700; }
+ul > li::marker{ color: var(--secondary); }
+
+strong{ color: var(--text); font-weight: 700; }
+em{ color: var(--text-soft); }
+code, kbd{
+  font-family: 'Source Code Pro', 'Courier New', monospace;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-size: 9.5pt;
+  color: var(--secondary);
+}
+
+hr{ border: 0; border-top: 1px solid var(--line); margin: 16pt 0; }
+
+/* breadcrumb / caminho de menu */
+.path{
+  display: inline-block;
+  background: var(--bg-soft);
+  border-left: 3px solid var(--primary);
+  padding: 4pt 8pt;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 9.5pt;
+  color: var(--text-soft);
+  margin: 4pt 0 10pt 0;
+  border-radius: 0 4px 4px 0;
+}
+.path::before{
+  content: "📍 ";
+  color: var(--primary);
+}
+
+/* ============================
+   CAIXAS DE AVISO
+   ============================ */
+.box{
+  border-left: 4px solid var(--primary);
+  padding: 9pt 12pt 9pt 14pt;
+  margin: 9pt 0;
+  border-radius: 0 5px 5px 0;
+  page-break-inside: avoid;
+}
+.box-title{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 10pt;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 4pt;
+  display: flex;
+  align-items: center;
+  gap: 5pt;
+}
+.box p{ margin: 0; font-size: 10.2pt; }
+.box.attention{ background: var(--primary-soft); border-color: var(--primary); }
+.box.attention .box-title{ color: var(--primary); }
+.box.tip{ background: var(--secondary-soft); border-color: var(--secondary); }
+.box.tip .box-title{ color: var(--secondary); }
+.box.info{ background: var(--info-soft); border-color: var(--info); }
+.box.info .box-title{ color: var(--info); }
+
+/* ============================
+   CAPA
+   ============================ */
+.cover{
+  page: cover;
+  page-break-after: always;
+  width: 210mm;
+  height: 297mm;
+  position: relative;
+  background: linear-gradient(135deg, var(--secondary) 0%, #2A1240 100%);
+  color: var(--white);
+  overflow: hidden;
+}
+.cover .stripe-top{
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 14mm;
+  background: var(--primary);
+}
+.cover .stripe-bottom{
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 10mm;
+  background: var(--primary);
+}
+.cover .blob{
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(242,101,34,0.22), transparent 70%);
+  pointer-events: none;
+}
+.cover .blob.tl{ top: -200px; left: -150px; }
+.cover .blob.br{ bottom: -180px; right: -120px; background: radial-gradient(circle at center, rgba(0,149,235,0.18), transparent 70%); }
+
+.cover .cover-inner{
+  position: absolute;
+  inset: 30mm 25mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.cover .cover-logo{
+  background: var(--white);
+  border-radius: 14px;
+  padding: 14mm 18mm;
+  text-align: center;
+  width: max-content;
+  margin: 0 auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+.cover .cover-logo img{ height: 60px; display: block; }
+
+.cover .cover-title{ text-align: center; }
+.cover .cover-eyebrow{
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11pt;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 10pt;
+}
+.cover .cover-title h1{
+  font-family: 'Montserrat', sans-serif;
+  font-size: 46pt;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin: 0 0 12pt 0;
+  border: 0;
+}
+.cover .cover-title h1 span{ color: var(--primary); }
+.cover .cover-subtitle{
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14pt;
+  font-weight: 300;
+  color: rgba(255,255,255,0.85);
+  max-width: 130mm;
+  margin: 0 auto;
+  line-height: 1.45;
+}
+
+.cover .cover-meta{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20mm;
+  color: rgba(255,255,255,0.85);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10pt;
+}
+.cover .cover-meta .block{ flex: 1; }
+.cover .cover-meta .label{
+  font-family: 'Montserrat', sans-serif;
+  font-size: 8.5pt;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 4pt;
+}
+.cover .cover-meta .value{
+  font-size: 13pt;
+  font-weight: 600;
+  color: var(--white);
+}
+
+/* ============================
+   SUMÁRIO
+   ============================ */
+.toc{
+  page-break-after: always;
+}
+.toc h1{ color: var(--primary); }
+.toc-list{
+  list-style: none;
+  padding: 0;
+  margin: 14pt 0 0 0;
+}
+.toc-list > li{
+  margin: 0;
+  border-bottom: 1px dotted var(--line);
+}
+.toc-list .lvl-1{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 11.5pt;
+  color: var(--secondary);
+  margin-top: 8pt;
+  padding: 7pt 0 4pt 0;
+}
+.toc-list .lvl-1 a{ color: var(--secondary); }
+.toc-list .lvl-2{
+  font-size: 10pt;
+  color: var(--text-soft);
+  padding: 4pt 0 4pt 18pt;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.toc-list .lvl-2 a{ color: var(--text-soft); flex: 0 1 auto; }
+.toc-list .lvl-2 .dots{ flex: 1; border-bottom: 1px dotted var(--line); margin: 0 6pt; transform: translateY(-3pt); }
+.toc-list .lvl-2 .pg{ color: var(--muted); font-variant-numeric: tabular-nums; }
+.toc-list .lvl-3{
+  font-size: 9.5pt;
+  color: var(--muted);
+  padding: 2pt 0 2pt 32pt;
+}
+
+/* ============================
+   SEÇÕES
+   ============================ */
+.section{
+  page-break-before: always;
+}
+.section-eyebrow{
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9pt;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 4pt;
+}
+.feature{
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14pt 16pt;
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  background: var(--white);
+}
+.feature h3{ margin-top: 0; }
+.feature .feature-goal{
+  background: var(--bg-soft);
+  border-left: 3px solid var(--secondary);
+  padding: 7pt 11pt;
+  font-size: 10pt;
+  border-radius: 0 4px 4px 0;
+  margin: 6pt 0 10pt 0;
+  color: var(--text-soft);
+}
+.feature .feature-goal strong{ color: var(--secondary); }
+
+/* placeholder de imagem */
+.screenshot{
+  background: repeating-linear-gradient(45deg, #F4F4F4, #F4F4F4 8px, #ECECEC 8px, #ECECEC 16px);
+  border: 1px dashed var(--secondary);
+  border-radius: 6px;
+  text-align: center;
+  padding: 30pt 12pt;
+  margin: 10pt 0;
+  color: var(--muted);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 9pt;
+  font-style: italic;
+}
+.screenshot strong{ color: var(--secondary); display: block; margin-bottom: 4pt; font-style: normal; }
+
+/* captura de tela real */
+figure.shot{ margin: 12pt 0 14pt 0; page-break-inside: avoid; }
+figure.shot img{
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(31,31,31,0.10);
+  display: block;
+}
+figure.shot figcaption{
+  margin-top: 5pt;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* tabelas */
+table{
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8pt 0 12pt 0;
+  font-size: 10pt;
+  page-break-inside: avoid;
+}
+th{
+  background: var(--secondary);
+  color: var(--white);
+  text-align: left;
+  padding: 6pt 9pt;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 9.5pt;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+td{
+  padding: 6pt 9pt;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+tr:nth-child(even) td{ background: var(--bg); }
+
+/* badges */
+.badge{
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 8.5pt;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.badge.primary{ background: var(--primary); color: var(--white); }
+.badge.secondary{ background: var(--secondary); color: var(--white); }
+.badge.info{ background: var(--info); color: var(--white); }
+.badge.outline{ background: var(--white); color: var(--secondary); border: 1px solid var(--secondary); }
+
+/* faq */
+.faq-item{
+  border-left: 3px solid var(--primary);
+  padding: 6pt 0 6pt 12pt;
+  margin: 8pt 0;
+  page-break-inside: avoid;
+}
+.faq-q{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  color: var(--secondary);
+  font-size: 11pt;
+  margin-bottom: 3pt;
+}
+.faq-q::before{ content: "P. "; color: var(--primary); }
+.faq-a::before{ content: "R. "; color: var(--secondary); font-weight: 700; }
+
+/* steps */
+.steps{ counter-reset: step; list-style: none; padding-left: 0; }
+.steps > li{
+  counter-increment: step;
+  position: relative;
+  padding: 4pt 0 6pt 30pt;
+  margin-bottom: 4pt;
+  page-break-inside: avoid;
+}
+.steps > li::before{
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 4pt;
+  width: 20pt; height: 20pt;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--white);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 9.5pt;
+  text-align: center;
+  line-height: 20pt;
+}
+
+/* contact card */
+.contact-card{
+  background: linear-gradient(135deg, var(--secondary) 0%, #2A1240 100%);
+  color: var(--white);
+  padding: 20pt 22pt;
+  border-radius: 10px;
+  margin: 14pt 0;
+  page-break-inside: avoid;
+}
+.contact-card h3{ color: var(--primary); margin-top: 0; font-size: 14pt; }
+.contact-card p{ color: rgba(255,255,255,0.92); margin: 4pt 0; font-size: 10.5pt; }
+.contact-card a{ color: var(--primary); font-weight: 700; }
+.contact-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 14pt; margin-top: 10pt; }
+.contact-grid .item{ background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); padding: 9pt 12pt; border-radius: 6px; }
+.contact-grid .item .label{ font-family: 'Montserrat', sans-serif; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.18em; color: var(--primary); font-weight: 700; margin-bottom: 3pt; }
+.contact-grid .item .value{ font-size: 11pt; color: var(--white); }
+
+/* keep alike together */
+.keep-together{ page-break-inside: avoid; }
+
+/* lists tight */
+.tight li{ margin-bottom: 1pt; }
+
+/* utility classes */
+.center{ text-align: center; }
+.muted{ color: var(--muted); font-size: 9.5pt; }
+.small{ font-size: 9.5pt; }
+
+/* legend grid */
+.legend{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8pt;
+  margin: 10pt 0;
+}
+.legend .item{
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 7pt 10pt;
+  font-size: 9.8pt;
+  background: var(--bg);
+}
+.legend .item strong{ display: block; color: var(--secondary); margin-bottom: 2pt; font-family: 'Montserrat', sans-serif; font-size: 10pt; }
+</style>
+</head>
+<body>
+
+<!-- ====================================================
+     SUMÁRIO
+     ==================================================== -->
+<section class="toc">
+  <div class="section-eyebrow">Índice</div>
+  <h1>Sumário</h1>
+  <ul class="toc-list">
+
+    <li class="lvl-1"><a href="#intro">1. Introdução</a></li>
+    <li class="lvl-2"><a href="#intro-visao">1.1 Visão geral do sistema</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#intro-publico">1.2 Público-alvo</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#intro-aprender">1.3 O que você vai aprender</a><span class="dots"></span><span class="pg"></span></li>
+
+    <li class="lvl-1"><a href="#req">2. Requisitos e primeiro acesso</a></li>
+    <li class="lvl-2"><a href="#req-navegadores">2.1 Navegadores suportados</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#req-login">2.2 Login no sistema</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#req-primeiro">2.3 Primeiro acesso e troca obrigatória de senha</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#req-recuperar">2.4 Recuperação de senha</a><span class="dots"></span><span class="pg"></span></li>
+
+    <li class="lvl-1"><a href="#interface">3. Visão geral da interface</a></li>
+    <li class="lvl-2"><a href="#interface-perfis">3.1 Os perfis de uso</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#interface-menu">3.2 Menu lateral e cabeçalho</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#interface-notificacoes">3.3 Notificações e indicadores</a><span class="dots"></span><span class="pg"></span></li>
+
+    <li class="lvl-1"><a href="#agent">4. Painel do Atendente</a></li>
+    <li class="lvl-2"><a href="#agent-dashboard">4.1 Dashboard do atendente</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#agent-tickets">4.2 Chamados (Tickets)</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#agent-knowledge">4.3 EasyWiki &amp; Integração Notion</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#agent-empresas">4.4 Empresas (Clientes)</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#agent-agendamentos">4.5 Agendamentos e RAT</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#agent-implantacao">4.6 Implantação</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#agent-monitor">4.7 Monitor</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#agent-reports">4.8 Relatórios do atendente</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#agent-tasks">4.9 Tarefas</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#agent-account">4.10 Minha conta</a><span class="dots"></span><span class="pg"></span></li>
+
+    <li class="lvl-1"><a href="#admin">5. Painel Administrativo</a></li>
+    <li class="lvl-2"><a href="#admin-dashboard">5.1 Dashboard administrativo &amp; TV</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#admin-users">5.2 Gestão de usuários</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#admin-categories">5.3 Categorias</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#admin-departments">5.4 Departamentos</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#admin-sla">5.5 Configuração de SLA</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#admin-helpdesk">5.6 Helpdesk: Status, Prioridade, Origens e Módulos</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#admin-implantacao">5.7 Implantação: RAT, Grupos, Módulos e Tipos</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#admin-whatsapp">5.8 WhatsApp Business</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#admin-crm">5.9 CRM Feedback (formulários)</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#admin-reports">5.10 Relatórios gerenciais</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#admin-settings">5.11 Configurações gerais e conta</a><span class="dots"></span><span class="pg"></span></li>
+
+    <li class="lvl-1"><a href="#crm">6. CRM — Feedback de Clientes</a></li>
+    <li class="lvl-2"><a href="#crm-list">6.1 Lista de feedback</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#crm-create">6.2 Registrar um novo feedback</a><span class="dots"></span><span class="pg"></span></li>
+    <li class="lvl-2"><a href="#crm-retorno">6.3 Retorno e histórico do cliente</a><span class="dots"></span><span class="pg"></span></li>
+
+    <li class="lvl-1"><a href="#faq">7. Perguntas frequentes (FAQ)</a></li>
+    <li class="lvl-1"><a href="#suporte">8. Suporte e contato</a></li>
+  </ul>
+</section>
+
+<!-- ====================================================
+     1. INTRODUÇÃO
+     ==================================================== -->
+<section class="section" id="intro">
+  <div class="section-eyebrow">Capítulo 1</div>
+  <h1>Introdução</h1>
+
+  <h2 id="intro-visao">1.1 Visão geral do sistema</h2>
+  <p>
+    O <strong>Sistema de Suporte da Amura Sistemas</strong> é uma plataforma centralizada para
+    gerenciar todo o ciclo de atendimento ao cliente: desde a abertura do chamado e
+    o registro técnico, passando pelas agendas de implantação e relatórios de atendimento (RAT),
+    até a comunicação por WhatsApp e a pesquisa de satisfação via CRM.
+  </p>
+  <p>
+    A plataforma reúne, em um só lugar, as ferramentas que antes ficavam espalhadas em
+    e-mails, planilhas e mensagens avulsas. O resultado é mais agilidade para o atendente,
+    mais visibilidade para o gestor e mais transparência para o cliente final.
+  </p>
+
+  <div class="box info">
+    <div class="box-title">ℹ️ Informação</div>
+    <p>
+      Este manual cobre as três áreas internas do sistema: <strong>Painel do Atendente</strong>,
+      <strong>Painel Administrativo</strong> e <strong>CRM</strong>.
+      Você pode pular diretamente para a seção que mais se aplica ao seu perfil pelo sumário.
+    </p>
+  </div>
+
+  <h2 id="intro-publico">1.2 Público-alvo</h2>
+  <p>O sistema atende, no mínimo, quatro perfis distintos:</p>
+  <ul>
+    <li><strong>Atendente (Suporte/Técnico):</strong> responsável por abrir, registrar, atender e fechar chamados.</li>
+    <li><strong>Administrador:</strong> configura usuários, categorias, prioridades, SLA, módulos, integrações e relatórios.</li>
+    <li><strong>Equipe comercial / CRM:</strong> registra feedbacks, retornos e contatos com clientes.</li>
+    <li><strong>Cliente final:</strong> abre chamados pelo WhatsApp e acompanha o andamento do atendimento.</li>
+  </ul>
+
+  <h2 id="intro-aprender">1.3 O que você vai aprender</h2>
+  <p>Ao final deste manual você será capaz de:</p>
+  <ul>
+    <li>Entrar no sistema, recuperar sua senha e personalizar sua conta.</li>
+    <li>Abrir, atender e encerrar chamados com toda a riqueza de informação que o sistema permite (múltiplas categorias, problemas, anexos, auditoria, recorrência e referências cruzadas).</li>
+    <li>Registrar atendimentos por diferentes canais (telefone, e-mail, presencial, WhatsApp) e registrar Relatórios de Atendimento (RAT).</li>
+    <li>Consultar e gerenciar empresas clientes, contatos e módulos contratados (o cadastro de novas empresas é feito pelo time financeiro).</li>
+    <li>Conduzir o processo de implantação com agendamentos, checklists e relatórios de progresso.</li>
+    <li>Configurar o sistema do ponto de vista administrativo (categorias, prioridades, SLA, integração WhatsApp).</li>
+    <li>Operar o CRM de feedback de clientes.</li>
+    <li>Orientar seus clientes finais sobre a abertura de chamados pelo WhatsApp.</li>
+  </ul>
+
+  <div class="box tip">
+    <div class="box-title">💡 Dica</div>
+    <p>
+      Os elementos visuais do sistema (cores de status, ícones, posicionamento dos botões)
+      podem variar ligeiramente conforme o tema (claro/escuro) e o perfil de acesso.
+      As <em>etapas funcionais</em>, no entanto, são sempre as mesmas e seguem o que está descrito aqui.
+    </p>
+  </div>
+</section>
+
+<!-- ====================================================
+     2. REQUISITOS E PRIMEIRO ACESSO
+     ==================================================== -->
+<section class="section" id="req">
+  <div class="section-eyebrow">Capítulo 2</div>
+  <h1>Requisitos e primeiro acesso</h1>
+
+  <h2 id="req-navegadores">2.1 Navegadores suportados</h2>
+  <p>
+    O sistema é totalmente baseado na web. Você só precisa de um navegador atualizado e
+    de uma conexão estável de internet. Recomendamos:
+  </p>
+  <table>
+    <thead>
+      <tr><th>Navegador</th><th>Versão mínima</th><th>Observações</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Google Chrome</td><td>120+</td><td>Recomendado para todos os perfis.</td></tr>
+      <tr><td>Microsoft Edge</td><td>120+</td><td>Plenamente compatível.</td></tr>
+      <tr><td>Mozilla Firefox</td><td>115+</td><td>Plenamente compatível.</td></tr>
+      <tr><td>Safari</td><td>16+</td><td>Compatível no macOS e iPadOS.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box attention">
+    <div class="box-title">⚠️ Atenção</div>
+    <p>
+      Navegadores fora de suporte do fabricante (como o Internet Explorer) <strong>não são compatíveis</strong>.
+      Sempre mantenha o seu navegador atualizado para garantir desempenho e segurança.
+    </p>
+  </div>
+
+  <h2 id="req-login">2.2 Login no sistema</h2>
+  <p>Para acessar o sistema, você precisa do endereço web informado pela Amura, do seu usuário (e-mail) e da senha.</p>
+
+  <ol class="steps">
+    <li>Abra o navegador e acesse o endereço enviado pela equipe Amura (ex.: <code>https://suporte.suaempresa.com.br</code>).</li>
+    <li>Na tela <strong>Bem-vindo ao Suporte</strong>, informe o seu <strong>Usuário</strong> (e-mail) e a <strong>Senha</strong>.</li>
+    <li>Se quiser ficar conectado mesmo após fechar o navegador, marque <strong>Manter conectado</strong>.</li>
+    <li>Clique em <strong>Acessar Conta</strong>.</li>
+  </ol>
+
+  <figure class="shot">
+    <img src="assets/screens/01-login.png" alt="Tela de login do sistema Amura Suporte">
+    <figcaption>
+      Tela de login: logo Amura, campos de Usuário e Senha, opção "Manter conectado",
+      link "Esqueceu sua senha?" e o botão "Acessar Conta".
+    </figcaption>
+  </figure>
+
+  <div class="box info">
+    <div class="box-title">ℹ️ Informação</div>
+    <p>
+      Administradores acessam o sistema pelo endereço <code>/admin</code> (ex.: <code>https://suporte.suaempresa.com.br/admin</code>),
+      com a mesma estrutura de tela mas o cabeçalho indica "Acesso Restrito".
+    </p>
+  </div>
+
+  <h2 id="req-primeiro">2.3 Primeiro acesso e troca obrigatória de senha</h2>
+  <p>
+    No seu primeiro acesso, o sistema vai pedir que você troque a senha temporária por uma de sua escolha.
+    Essa exigência protege a sua conta contra acessos não autorizados.
+  </p>
+  <ol class="steps">
+    <li>Faça login com a senha temporária recebida por e-mail.</li>
+    <li>Você será redirecionado para a tela <strong>Troca de senha obrigatória</strong>.</li>
+    <li>Em <strong>Nova senha</strong>, informe uma senha com, no mínimo, <strong>8 caracteres</strong>.</li>
+    <li>Em <strong>Confirmar nova senha</strong>, digite novamente para confirmar.</li>
+    <li>Clique em <strong>Salvar nova senha</strong>. Você será encaminhado para a sua área padrão.</li>
+  </ol>
+
+  <div class="box tip">
+    <div class="box-title">💡 Dica de segurança</div>
+    <p>
+      Use senhas com pelo menos 12 caracteres, combinando letras maiúsculas, minúsculas, números e símbolos.
+      Não compartilhe sua senha com colegas; cada pessoa deve ter o próprio usuário.
+    </p>
+  </div>
+
+  <h2 id="req-recuperar">2.4 Recuperação de senha</h2>
+  <p>Se você esqueceu sua senha, é possível solicitar um link de redefinição em poucos passos:</p>
+  <ol class="steps">
+    <li>Na tela de login, clique em <strong>Esqueceu sua senha?</strong>.</li>
+    <li>Informe o <strong>e-mail</strong> cadastrado no sistema e clique em <strong>Link de Redefinição de Senha por E-mail</strong>.</li>
+    <li>Verifique sua caixa de entrada (e a pasta de spam, se necessário). Você vai receber um e-mail com um link de redefinição.</li>
+    <li>Clique no link recebido — ele abrirá a tela para definir uma nova senha.</li>
+    <li>Digite a nova senha, confirme e clique em <strong>Redefinir Senha</strong>. Pronto: você já pode entrar com a senha nova.</li>
+  </ol>
+
+  <div class="box attention">
+    <div class="box-title">⚠️ Atenção</div>
+    <p>
+      O link de redefinição tem validade limitada (em geral, 60 minutos). Se ele expirar, basta repetir o processo.
+      Por segurança, o sistema também limita o número de tentativas de redefinição em um curto intervalo de tempo.
+    </p>
+  </div>
+</section>
+
+<!-- ====================================================
+     3. VISÃO GERAL DA INTERFACE
+     ==================================================== -->
+<section class="section" id="interface">
+  <div class="section-eyebrow">Capítulo 3</div>
+  <h1>Visão geral da interface</h1>
+
+  <h2 id="interface-perfis">3.1 Os perfis de uso</h2>
+  <p>
+    O sistema reúne <strong>painéis internos</strong>, cada um pensado para um perfil específico de usuário.
+    A tela que você vê após o login depende do seu perfil. A organização lógica é a seguinte:
+  </p>
+  <table>
+    <thead>
+      <tr><th>Painel</th><th>Quem usa</th><th>O que você faz lá</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge primary">Atendente</span></td>
+        <td>Suporte técnico, analistas, implantadores</td>
+        <td>Abrir e atender chamados, registrar atendimentos, gerar RAT, gerenciar conhecimento e empresas.</td>
+      </tr>
+      <tr>
+        <td><span class="badge secondary">Administrador</span></td>
+        <td>Coordenadores e gestores</td>
+        <td>Configurar usuários, categorias, prioridades, SLA, módulos, WhatsApp e CRM.</td>
+      </tr>
+      <tr>
+        <td><span class="badge info">CRM</span></td>
+        <td>Equipe comercial</td>
+        <td>Cadastrar feedbacks por cliente, registrar retornos e acompanhar histórico.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 id="interface-menu">3.2 Menu lateral e cabeçalho</h2>
+  <p>
+    A interface dos painéis internos segue um padrão consistente: um <strong>menu lateral à esquerda</strong>
+    com os módulos disponíveis, um <strong>cabeçalho superior</strong> com saudação
+    e atalhos para a sua conta, e a <strong>área central</strong>, onde o conteúdo é exibido.
+  </p>
+  <ul>
+    <li><strong>Logo Amura</strong> — no topo do menu, sempre leva à tela inicial do painel.</li>
+    <li><strong>Itens do menu</strong> — agrupados por área (Atendimento, Clientes &amp; Empresas, Implantação e Tarefas).</li>
+    <li><strong>Saudação</strong> — exibe o seu primeiro nome no canto direito do cabeçalho.</li>
+    <li><strong>Menu da conta</strong> — acesso à sua página de conta e ao botão de sair (logout).</li>
+  </ul>
+
+  <figure class="shot">
+    <img src="assets/screens/02-panel.png" alt="Layout geral do painel do atendente">
+    <figcaption>
+      Layout geral do painel: menu lateral à esquerda, cabeçalho superior com saudação e
+      atalhos da conta, e a área central com o conteúdo do módulo selecionado.
+    </figcaption>
+  </figure>
+
+  <h2 id="interface-notificacoes">3.3 Notificações e indicadores</h2>
+  <p>
+    Vários itens do menu exibem <strong>pequenas etiquetas coloridas (badges)</strong> indicando
+    o número de pendências (chamados atrasados, agendamentos do dia, tarefas novas, mensagens não lidas).
+    Use-as como sinal para priorizar seu trabalho.
+  </p>
+
+  <div class="legend">
+    <div class="item"><strong>Vermelho</strong>Itens atrasados ou vencidos — atenção imediata.</div>
+    <div class="item"><strong>Âmbar</strong>Itens previstos para hoje.</div>
+    <div class="item"><strong>Roxo / Azul</strong>Próximos da agenda e novas notificações.</div>
+    <div class="item"><strong>Verde</strong>Sucesso, conclusão ou status saudável.</div>
+  </div>
+</section>
+
+<!-- ====================================================
+     4. PAINEL DO ATENDENTE
+     ==================================================== -->
+<section class="section" id="agent">
+  <div class="section-eyebrow">Capítulo 4</div>
+  <h1>Painel do Atendente</h1>
+  <p>
+    O painel do atendente é o coração operacional do sistema. É aqui que você abre chamados,
+    registra atendimentos, gerencia clientes, agenda implantações, gera RAT, consulta a base
+    de conhecimento e monitora a fila do dia.
+  </p>
+
+  <!-- 4.1 Dashboard -->
+  <div class="feature" id="agent-dashboard">
+    <h3>4.1 Dashboard do atendente</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> oferecer uma visão de alto nível das suas atividades do dia, com atalhos para os módulos mais usados e indicadores de pendência.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Menu lateral → ícone <em>Início</em> (ou clique no logo Amura)</div>
+    <p>O dashboard é organizado em <strong>cards agrupados por área</strong>:</p>
+    <ul>
+      <li><strong>Atendimento</strong> — Novo Ticket, Atendimentos (timeline da semana).</li>
+      <li><strong>Implantação</strong> — Visão Geral, Calendário, Novo Agendamento, Relatório de Implantações.</li>
+      <li><strong>Desenvolvimento</strong> — Tarefas, com badges de itens novos, parados e para hoje.</li>
+      <li><strong>Clientes &amp; Empresas</strong> — Gerenciar empresas e Monitor.</li>
+    </ul>
+    <p>
+      Cada card pode exibir uma <strong>etiqueta numérica</strong> no canto superior direito
+      indicando pendências (ex.: 3 agendamentos atrasados). Clique no card para entrar no módulo.
+    </p>
+    <figure class="shot">
+      <img src="assets/screens/03-dashboard.png" alt="Dashboard do atendente">
+      <figcaption>
+        Dashboard do atendente: cards agrupados por área (Atendimento, Implantação,
+        Desenvolvimento, Clientes &amp; Empresas) com badges de pendência e saudação personalizada.
+      </figcaption>
+    </figure>
+  </div>
+
+  <!-- 4.2 Chamados -->
+  <h2 id="agent-tickets">4.2 Chamados (Tickets)</h2>
+  <p>
+    Os <strong>chamados</strong> são o registro central de toda demanda de suporte.
+    Eles guardam histórico, anexos, atendimentos, problemas, soluções e relação com outros chamados.
+    Esta seção é dividida em sete passos: listagem, criação, edição, captura, atendimentos,
+    anexos e fechamento.
+  </p>
+
+  <div class="feature">
+    <h3>4.2.1 Listagem e filtros de chamados</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> encontrar rapidamente os chamados em andamento, atribuídos a você ou disponíveis na fila.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Menu lateral → Atendimento → Chamados</div>
+    <ol class="steps">
+      <li>Clique em <strong>Chamados</strong> no menu lateral para ver todos os chamados, ou em <strong>Meus chamados</strong> para apenas os atribuídos a você.</li>
+      <li>Use o campo <strong>Buscar chamado…</strong> para localizar por número, empresa, contato ou palavra-chave do título.</li>
+      <li>Aplique <strong>filtros</strong> pelos cartões laterais: status, prioridade, departamento e período.</li>
+      <li>Clique sobre qualquer linha para abrir o chamado em detalhe.</li>
+    </ol>
+    <div class="box tip">
+      <div class="box-title">💡 Dica</div>
+      <p>
+        Você pode pré-configurar, em <em>Minha conta</em>, se os chamados devem abrir em
+        nova aba e se a categoria deve ser exibida diretamente na lista — útil quando você
+        gerencia muitos chamados simultâneos.
+      </p>
+    </div>
+  </div>
+
+  <div class="feature">
+    <h3>4.2.2 Abrindo um novo chamado</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> registrar uma nova demanda de suporte com todos os dados necessários para que o atendimento seja rastreável.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Menu lateral → Atendimento → Novo Chamado (ou cartão "Novo Ticket" do dashboard)</div>
+    <p>
+      O formulário de criação é dividido em <strong>cinco blocos</strong>, do mais geral para o mais específico.
+      Cada bloco está organizado para que você preencha de cima para baixo, sem precisar voltar.
+    </p>
+
+    <h4>Bloco 1 — Metadados iniciais</h4>
+    <ol class="steps">
+      <li><strong>Data</strong> e <strong>Hora</strong> são preenchidas automaticamente com o momento atual.</li>
+      <li>Em <strong>Setor</strong> selecione o departamento responsável pelo chamado (ex.: Suporte, Comercial).</li>
+      <li>Em <strong>Técnico/Suporte</strong>, escolha o atendente que assumirá o chamado — ou deixe em branco para colocar na fila.</li>
+      <li>Em <strong>Empresa/Cliente</strong>, busque o cliente por <strong>nome, CNPJ, cidade ou contato</strong>; o sistema lista resultados conforme você digita.</li>
+    </ol>
+
+    <h4>Bloco 2 — Informações do sistema e contexto técnico</h4>
+    <ol class="steps">
+      <li>Em <strong>Observação interna</strong>, adicione notas que ajudem o atendente (ex.: "cliente já tentou reiniciar serviço").</li>
+      <li>Preencha a <strong>Versão Base</strong> (ex.: 01.32.01) e a <strong>Release</strong> (ex.: R4) do software do cliente, se aplicáveis.</li>
+      <li>Informe o <strong>Nome do contato</strong> (pessoa de referência para retorno).</li>
+      <li>Em <strong>Categoria</strong>, selecione a categoria principal; em seguida o sistema carrega as subcategorias em <strong>Problema central</strong>.</li>
+    </ol>
+
+    <h4>Bloco 3 — Detalhamento do problema e solução</h4>
+    <ol class="steps">
+      <li>No campo <strong>Detalhamento do problema</strong>, descreva o que está ocorrendo. Use o botão de expandir para abrir um editor maior.</li>
+      <li>No campo <strong>Escopo da solução aplicada</strong>, registre o que já foi feito ou o que se pretende fazer.</li>
+    </ol>
+
+    <h4>Bloco 4 — Evidências e anexos</h4>
+    <ol class="steps">
+      <li>Clique no botão de anexar arquivos ou arraste arquivos para a área indicada.</li>
+      <li>Anexe imagens, PDFs, planilhas ou áudios. É possível anexar <strong>múltiplos arquivos</strong> de uma vez.</li>
+      <li>Para remover um anexo, passe o mouse sobre ele e clique no ícone de excluir.</li>
+    </ol>
+    <div class="box info">
+      <div class="box-title">ℹ️ Informação</div>
+      <p>
+        Cada anexo é armazenado de forma segura e fica disponível apenas para usuários autenticados.
+        Você pode também colar imagens com <kbd>Ctrl</kbd>+<kbd>V</kbd> diretamente nos campos de texto.
+      </p>
+    </div>
+
+    <h4>Bloco 5 — Finalização (status, canal e flags)</h4>
+    <ol class="steps">
+      <li>Em <strong>Decisão de status</strong>, escolha o estado inicial do chamado (Aberto, Em andamento, Solicitação, Resolvido).</li>
+      <li>Em <strong>Canal de origem</strong>, registre como o chamado chegou (Telefone, E-mail, Presencial, WhatsApp, Portal).</li>
+      <li>Marque <strong>Recorrente</strong> se este chamado representa um problema repetitivo do cliente.</li>
+      <li>Em <strong>Chamado referente</strong>, informe o nº de outro chamado se este for um desdobramento de um caso anterior.</li>
+      <li>Clique em <strong>Salvar chamado</strong>. O sistema cria o registro, gera o número do chamado e abre a tela de detalhes.</li>
+    </ol>
+
+    <div class="box attention">
+      <div class="box-title">⚠️ Atenção</div>
+      <p>
+        Empresas com pendências financeiras podem ter o botão de salvar <strong>bloqueado</strong> automaticamente,
+        para preservar a política comercial. Nesses casos, fale com a coordenação antes de prosseguir.
+      </p>
+    </div>
+
+    <figure class="shot">
+      <img src="assets/screens/04-new-ticket.png" alt="Formulário de novo chamado">
+      <figcaption>
+        Formulário de novo chamado com os cinco blocos: metadados iniciais, contexto técnico,
+        detalhamento e solução, evidências/anexos e finalização (status, canal e flags).
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="feature">
+    <h3>4.2.3 Captura e liberação de chamados</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> assumir oficialmente a responsabilidade por um chamado da fila (ou liberá-lo de volta).
+    </div>
+    <p>
+      Chamados sem técnico definido ficam disponíveis na fila do setor. Você pode <strong>capturar</strong>
+      um chamado para si — passando a ser o responsável visível pelo atendimento — ou
+      <strong>liberá-lo</strong> de volta caso não consiga atender.
+    </p>
+    <ol class="steps">
+      <li>Abra o chamado pela listagem.</li>
+      <li>Clique no botão <strong>Puxar para mim</strong>. O técnico passa a ser você.</li>
+      <li>Para liberar, abra o chamado já capturado e clique em <strong>Devolver para a fila</strong> — ele retorna à fila de pendências.</li>
+    </ol>
+  </div>
+
+  <div class="feature">
+    <h3>4.2.4 Tela de detalhe do chamado</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> centralizar todas as ferramentas de atendimento em uma única tela.
+    </div>
+    <p>Ao abrir um chamado, a tela exibe, da esquerda para a direita / de cima para baixo:</p>
+    <ul>
+      <li><strong>Cabeçalho</strong> com número, título, etiquetas (Recorrente, WhatsApp, Resolvido) e botões de ação rápida — <strong>Editar</strong> (a opção <strong>Excluir</strong> aparece apenas para administradores).</li>
+      <li><strong>Aba "Respostas"</strong> — respostas publicadas ao cliente, sincronizadas no histórico do chamado.</li>
+      <li><strong>Aba "Atendimentos"</strong> — onde você cria os atendimentos e comentários internos.</li>
+      <li><strong>Aba "Anexos"</strong> — todos os arquivos vinculados ao chamado.</li>
+      <li><strong>Aba "Modificações"</strong> — histórico automático de todas as alterações (auditoria).</li>
+      <li><strong>Aba "WhatsApp"</strong> — quando habilitada, é a última aba; lista a conversa com o cliente e permite enviar mensagens.</li>
+      <li><strong>Painel de Problemas</strong> — múltiplos problemas dentro do mesmo chamado.</li>
+      <li><strong>Coluna lateral "Informações"</strong> — dados do cliente, status, prioridade, origem, contato e categoria.</li>
+    </ul>
+    <figure class="shot">
+      <img src="assets/screens/05-ticket-detail.png" alt="Tela de detalhe do chamado">
+      <figcaption>
+        Tela de detalhe do chamado: cabeçalho com número e etiquetas, abas de Respostas,
+        Atendimentos, Anexos, Modificações e WhatsApp, o painel de Problemas e a coluna lateral "Informações".
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="feature">
+    <h3>4.2.5 Registrar um atendimento</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> documentar cada interação com o cliente (telefone, e-mail, presencial) dentro do chamado.
+    </div>
+    <ol class="steps">
+      <li>Dentro do chamado, vá à aba <strong>Atendimentos</strong>.</li>
+      <li>Selecione o <strong>Canal</strong> do atendimento (Telefone, E-mail, Presencial, WhatsApp).</li>
+      <li>Descreva no campo de texto o que foi tratado.</li>
+      <li>Clique em <strong>Registrar atendimento</strong>. Ele passa a fazer parte do histórico do chamado.</li>
+    </ol>
+    <p>
+      É possível <strong>filtrar</strong> a lista de atendimentos por canal, período ou texto da descrição.
+      Também há um histórico de <strong>retornos</strong>: cada vez que o chamado volta para um novo atendimento,
+      o sistema registra automaticamente quem foi o responsável e quando.
+    </p>
+    <div class="box tip">
+      <div class="box-title">💡 Dica</div>
+      <p>
+        Mesmo atendimentos curtos ("ligou para confirmar resolução") devem ser registrados — isso
+        constrói um histórico confiável que ajuda em revisões internas e em renegociações comerciais.
+      </p>
+    </div>
+  </div>
+
+  <div class="feature">
+    <h3>4.2.6 Múltiplos problemas no mesmo chamado</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> tratar, num único chamado, vários problemas relacionados, cada um com sua descrição e solução.
+    </div>
+    <ol class="steps">
+      <li>No painel <strong>Problemas</strong>, clique em <strong>+ Novo problema</strong>.</li>
+      <li>Preencha o <strong>Título</strong> (obrigatório) e, se desejar, a <strong>Descrição detalhada</strong>.</li>
+      <li>Clique em <strong>Adicionar</strong>. O problema aparece na lista do chamado.</li>
+      <li>Para registrar a solução de um problema, clique em <strong>Resolver</strong>, descreva como foi resolvido e confirme.</li>
+    </ol>
+    <p>Cada problema tem o seu próprio estado (em aberto / resolvido) e sua solução fica registrada para consulta futura.</p>
+  </div>
+
+  <div class="feature">
+    <h3>4.2.7 Anexos no chamado</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> manter todos os documentos, evidências e capturas relacionadas ao chamado em um só lugar.
+    </div>
+    <ol class="steps">
+      <li>No painel <strong>Anexos</strong>, arraste arquivos para a área indicada ou clique no botão para selecioná-los.</li>
+      <li>Aguarde o envio — uma barra de progresso aparece para cada arquivo.</li>
+      <li>Para visualizar, clique no anexo. Imagens abrem em <em>preview</em>, demais formatos baixam.</li>
+      <li>Para remover, clique no ícone de excluir e confirme.</li>
+    </ol>
+    <div class="box attention">
+      <div class="box-title">⚠️ Atenção</div>
+      <p>
+        Não anexe arquivos com dados sensíveis (senhas, cartões, documentos pessoais) sem necessidade
+        e sem autorização do cliente. O sistema aplica permissões de acesso, mas a boa prática é
+        sempre minimizar o armazenamento de dados sensíveis.
+      </p>
+    </div>
+  </div>
+
+  <div class="feature">
+    <h3>4.2.8 Histórico de alterações (aba Modificações)</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> ter rastreabilidade completa do que mudou no chamado, por quem e quando.
+    </div>
+    <p>
+      Toda alteração relevante (mudança de status, troca de técnico, edição de campos, captura/liberação)
+      é registrada automaticamente. Para consultar:
+    </p>
+    <ol class="steps">
+      <li>Abra o chamado.</li>
+      <li>Abra a aba <strong>Modificações</strong>.</li>
+      <li>Veja a linha do tempo com data/hora, usuário responsável e descrição da mudança.</li>
+    </ol>
+  </div>
+
+  <div class="feature">
+    <h3>4.2.9 Conversa de WhatsApp no chamado</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> conversar com o cliente diretamente pelo WhatsApp <em>de dentro do chamado</em>, mantendo todo o histórico vinculado ao caso.
+    </div>
+    <ol class="steps">
+      <li>No detalhe do chamado, localize o painel <strong>WhatsApp</strong>.</li>
+      <li>Se ainda não houver conversa iniciada, informe o número do cliente (formato internacional, ex.: <code>5527999999999</code>) e a mensagem inicial. Clique em <strong>Iniciar conversa</strong>.</li>
+      <li>Use o campo de digitação para enviar mensagens. Digite <code>/sefaz</code> ou outro <strong>atalho</strong> previamente configurado para enviar respostas-padrão.</li>
+      <li>Anexe imagens, documentos ou arquivos pelo botão de anexo.</li>
+      <li><strong>Gravação de Áudio com Pré-escuta:</strong> Clique no ícone do microfone para iniciar a gravação. Ao finalizar, clique em <strong>Parar e Ouvir</strong>. Utilize o player integrado para escutar o áudio gravado e, se aprovado, clique em <strong>Enviar Áudio</strong> (ou em <strong>Descartar</strong> para cancelar e apagar a gravação).</li>
+      <li>Para editar uma mensagem já enviada, clique sobre ela e selecione <strong>Editar</strong>.</li>
+    </ol>
+    <div class="box info">
+      <div class="box-title">ℹ️ Informação</div>
+      <p>
+        A integração com WhatsApp é configurada pelo administrador. Caso o painel apareça desabilitado,
+        verifique com a coordenação se a instância está conectada e se o seu departamento tem acesso ao recurso.
+      </p>
+    </div>
+  </div>
+
+  <div class="feature">
+    <h3>4.2.10 Fechar o chamado</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> encerrar o atendimento formalmente, com a descrição final da solução.
+    </div>
+    <ol class="steps">
+      <li>Abra o chamado a ser fechado.</li>
+      <li>No painel inferior do detalhe, clique em <strong>Fechar chamado</strong>.</li>
+      <li>Em <strong>Solução final</strong>, descreva a solução aplicada de forma clara.</li>
+      <li>Confirme. O chamado vai para o status <em>Resolvido</em> e fica disponível para consulta histórica.</li>
+    </ol>
+  </div>
+
+  <!-- 4.3 EasyWiki -->
+  <h2 id="agent-knowledge">4.3 EasyWiki (Base de Conhecimento)</h2>
+  <div class="feature">
+    <h3>4.3.1 Buscar artigos na EasyWiki</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> consultar a base de conhecimento interna para reaproveitar soluções já documentadas.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Menu lateral → EasyWiki</div>
+    <ol class="steps">
+      <li>Use o campo <strong>Buscar por título, problema, solução ou tags…</strong> para encontrar artigos.</li>
+      <li>Filtre por <strong>Categoria</strong> usando a lista suspensa ao lado.</li>
+      <li>Clique no artigo desejado para ler o conteúdo completo.</li>
+    </ol>
+  </div>
+
+  <div class="feature">
+    <h3>4.3.2 Incluir uma nova solução na EasyWiki</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> contribuir com o conhecimento coletivo da equipe ao documentar uma nova solução.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">EasyWiki → botão "Incluir na EasyWiki" (ou diretamente a partir de um chamado já resolvido)</div>
+    <ol class="steps">
+      <li>Informe um <strong>Título</strong> descritivo. Ex.: "Erro ao gerar nota fiscal no módulo Fiscal".</li>
+      <li>Selecione a <strong>Categoria</strong> à qual o artigo pertence.</li>
+      <li>No campo <strong>Problema</strong>, descreva o contexto, sintomas e condições em que o erro ocorre.</li>
+      <li>No campo <strong>Solução</strong>, descreva passo a passo como o problema foi resolvido.</li>
+      <li>Informe <strong>Tags</strong> separadas por vírgula (ex.: <code>fiscal, nfe, erro</code>) para facilitar a busca.</li>
+      <li>Defina a <strong>Visibilidade</strong> (interna ou compartilhada).</li>
+      <li>Clique em <strong>Salvar artigo</strong>.</li>
+    </ol>
+    <div class="box tip">
+      <div class="box-title">💡 Dica</div>
+      <p>
+        Você pode criar um artigo diretamente a partir de um chamado já resolvido — o sistema
+        pré-preenche o título e o problema com o conteúdo do chamado, poupando tempo.
+      </p>
+    </div>
+  </div>
+
+  <div class="feature">
+    <h3>4.3.3 Integração com Notion</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> conectar a base de conhecimento ao Notion para sincronizar documentações, manuais e procedimentos técnicos de forma transparente.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">EasyWiki → botão "Configurar Notion"</div>
+    <ol class="steps">
+      <li>Obtenha o <strong>Internal Integration Secret</strong> (token que inicia com <code>secret_...</code>) no painel de desenvolvedores do Notion.</li>
+      <li>Localize o <strong>ID do Banco de Dados</strong> ou <strong>ID da Página</strong> (código de 32 caracteres presente na URL do Notion).</li>
+      <li>No Notion, certifique-se de conectar a integração à página/banco desejado clicando no menu <code>...</code> &rarr; <em>Connect to</em>.</li>
+      <li>Cole as credenciais na tela de configuração da EasyWiki e clique em <strong>Testar e Salvar Conexão</strong>.</li>
+      <li>Uma vez conectado, os artigos vinculados ao Notion poderão ser consultados e sincronizados diretamente pelo sistema de suporte.</li>
+    </ol>
+    <div class="box info">
+      <div class="box-title">ℹ️ Sincronização e Segurança</div>
+      <p>
+        O token do Notion é armazenado de forma segura e utilizado para ler e atualizar as documentações sem expor dados internos do workspace.
+      </p>
+    </div>
+  </div>
+
+  <div class="feature">
+    <h3>4.3.4 Edição e Formatação Avançada de Artigos</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> manter os artigos da base de conhecimento atualizados e formatados com barra de ferramentas rica.
+    </div>
+    <ol class="steps">
+      <li>Ao visualizar um artigo existente, clique no botão <strong>Editar Artigo</strong>.</li>
+      <li>Utilize a <strong>barra de ferramentas nativa</strong> para formatar títulos, negrito, itálico, listas e blocos de código com destaque de sintaxe.</li>
+      <li>É possível anexar imagens e capturas de tela diretamente no corpo do texto para ilustrar o passo a passo.</li>
+      <li>Revise as tags e categoria e clique em <strong>Atualizar Artigo</strong>.</li>
+    </ol>
+  </div>
+
+  <!-- 4.4 Empresas -->
+  <h2 id="agent-empresas">4.4 Empresas (Clientes)</h2>
+  <div class="feature">
+    <h3>4.4.1 Listar e buscar empresas</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> consultar o cadastro das empresas clientes, com filtros e informações resumidas.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Menu lateral → Clientes &amp; Empresas → Empresas</div>
+    <ol class="steps">
+      <li>Use o campo <strong>Buscar por nome, CNPJ, cidade ou contato…</strong>.</li>
+      <li>Aplique filtros adicionais por status (Ativa, Inativa) ou recursos contratados (e-Commerce, CRM, TEF).</li>
+      <li>Clique em uma linha para abrir o cadastro completo da empresa.</li>
+    </ol>
+  </div>
+
+  <div class="feature">
+    <h3>4.4.2 Cadastrar uma nova empresa</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> registrar uma nova empresa cliente no sistema, com seus contatos e módulos contratados.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Empresas → botão "Nova empresa"</div>
+    <div class="box attention">
+      <div class="box-title">⚠️ Atenção</div>
+      <p>
+        O cadastro de novas empresas é, por política interna, responsabilidade do <strong>time financeiro</strong>.
+        Dependendo do seu perfil de acesso, o botão <strong>Nova empresa</strong> pode não aparecer — nesse caso,
+        solicite o cadastro ao financeiro. O passo a passo abaixo serve de referência para quem tem essa permissão.
+      </p>
+    </div>
+    <p>O cadastro está dividido em quatro blocos:</p>
+
+    <h4>Identificação</h4>
+    <ol class="steps">
+      <li>Preencha <strong>Razão social</strong> (obrigatório) e <strong>Nome fantasia</strong>.</li>
+      <li>Informe o <strong>CNPJ</strong>, o <strong>Código Empresarial</strong> e a <strong>Inscrição Municipal</strong>.</li>
+      <li>Selecione o <strong>Grupo Empresarial</strong> (com suporte a criação dinâmica).</li>
+      <li>Informe o <strong>Telefone principal</strong> e o <strong>Telefone secundário</strong> (Telefone 2).</li>
+    </ol>
+
+    <h4>Localização</h4>
+    <ol class="steps">
+      <li>Preencha <strong>Cidade</strong> e <strong>Bairro</strong>.</li>
+      <li>Use o campo <strong>Observações</strong> para anotações internas sobre a empresa.</li>
+    </ol>
+
+    <h4>Contatos</h4>
+    <ol class="steps">
+      <li>Clique em <strong>+ Adicionar contato</strong> para incluir um novo.</li>
+      <li>Informe nome e telefone de cada contato.</li>
+      <li>Marque um contato como <strong>Principal</strong> usando o botão da estrela.</li>
+      <li>Para remover um contato, use o ícone de lixeira.</li>
+    </ol>
+
+    <h4>Módulos contratados</h4>
+    <ol class="steps">
+      <li>Marque os <strong>Módulos</strong> que o cliente tem ativos (Fiscal, Estoque, Vendas, etc.).</li>
+      <li>Marque <strong>Empresa ativa</strong> se ela está com contrato em vigor.</li>
+      <li>Clique em <strong>Salvar empresa</strong>.</li>
+    </ol>
+
+    <div class="box info">
+      <div class="box-title">ℹ️ Informação</div>
+      <p>
+        Há atalhos rápidos para <strong>ativar/inativar</strong> a empresa ou <strong>habilitar/desabilitar</strong>
+        recursos (e-Commerce, CRM, TEF) diretamente pela lista, sem abrir o cadastro completo.
+      </p>
+    </div>
+  </div>
+
+  <div class="feature">
+    <h3>4.4.3 Editar empresa e ver histórico</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> manter atualizado o cadastro da empresa e consultar o histórico de chamados e atendimentos relacionados.
+    </div>
+    <ol class="steps">
+      <li>Na listagem, clique sobre a empresa.</li>
+      <li>Use o botão <strong>Editar</strong> para alterar dados de identificação, localização, contatos e módulos.</li>
+      <li>Clique em <strong>Histórico</strong> para ver chamados, agendamentos e implantações vinculadas à empresa.</li>
+    </ol>
+  </div>
+
+  <!-- 4.5 Agendamentos -->
+  <h2 id="agent-agendamentos">4.5 Agendamentos e RAT</h2>
+  <div class="feature">
+    <h3>4.5.1 Criar um agendamento</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> programar uma visita, consultoria ou implantação para um cliente, vinculada (ou não) a um chamado.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Menu lateral → Implantação → Novo agendamento (ou cartão "Novo Agendamento" do dashboard)</div>
+    <ol class="steps">
+      <li>Em <strong>Tipo</strong>, escolha se o agendamento é vinculado a um <strong>Chamado</strong> ou é livre (consultoria, reunião, visita técnica).</li>
+      <li>Em <strong>Título</strong>, descreva resumidamente o agendamento (ex.: "Consultoria mensal módulo Fiscal").</li>
+      <li>Em <strong>Cliente</strong>, selecione a empresa. Se o agendamento vier de um chamado, o cliente já é preenchido.</li>
+      <li>Em <strong>Módulo</strong>, selecione o módulo principal envolvido.</li>
+      <li>Em <strong>Agente</strong>, defina o responsável pela execução.</li>
+      <li>Defina <strong>Data</strong> e <strong>Hora de início</strong> no calendário.</li>
+      <li>Em <strong>Contato</strong>, informe quem solicitou o atendimento.</li>
+      <li>Em <strong>Observações</strong>, registre detalhes importantes para a execução.</li>
+      <li>Clique em <strong>Criar agendamento</strong>.</li>
+    </ol>
+  </div>
+
+  <div class="feature">
+    <h3>4.5.2 Executar o agendamento e registrar o RAT</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> conduzir o agendamento até a finalização, com o registro dos Relatórios de Atendimento (RAT).
+    </div>
+    <ol class="steps">
+      <li>No dia/hora do agendamento, abra o detalhe pelo calendário.</li>
+      <li>Não há um passo de confirmação manual: ao ser salvo, o agendamento já fica com o status <strong>Confirmado</strong>.</li>
+      <li>Registre os atendimentos (RATs) realizados durante a visita: cada RAT tem checklist próprio em função do módulo contratado.</li>
+      <li>Quando o atendimento estiver concluído, clique em <strong>Finalizar</strong>.</li>
+      <li>Os RATs ficam registrados no agendamento para consulta posterior.</li>
+    </ol>
+    <div class="box tip">
+      <div class="box-title">💡 Dica</div>
+      <p>
+        Os checklists de RAT são configurados por <em>Módulo de RAT</em> no painel administrativo. Mantenha-os
+        atualizados para que o documento final reflita os itens efetivamente verificados.
+      </p>
+    </div>
+  </div>
+
+  <div class="feature">
+    <h3>4.5.3 Calendário condensado</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> visualizar, em uma única tela, todos os chamados e agendamentos da semana.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Dashboard → cartão "Atendimentos (Timeline)" ou Implantação → Calendário de Implantação</div>
+    <p>
+      O calendário condensado mostra a semana corrente, organizada por dia, com cores e ícones
+      indicando o tipo de evento (chamado em andamento, agendamento de implantação, RAT, etc.).
+    </p>
+    <p>
+      Para alternar entre as visões, use as <strong>abas no topo do calendário</strong>
+      (<em>Em andamento</em>, <em>Agendamentos</em> e <em>Atendimentos</em>). Pelo menu, o item
+      <strong>Atendimento → Atendimentos (Timeline)</strong> abre a visão de atendimentos e
+      <strong>Implantação → Calendário de Implantação</strong> abre a visão de implantação.
+    </p>
+  </div>
+
+  <!-- 4.6 Implantação -->
+  <h2 id="agent-implantacao">4.6 Implantação</h2>
+  <div class="feature">
+    <h3>4.6.1 Visão geral de implantação</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> acompanhar todos os clientes em fase de implantação, com KPIs e atalhos para os módulos centrais.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Menu lateral → Implantação → Visão Geral</div>
+    <p>A visão geral concentra três áreas:</p>
+    <ul>
+      <li><strong>KPIs</strong> — totais de clientes ativos, atrasos e próximos eventos.</li>
+      <li><strong>Clientes em andamento</strong> — listagem com status de cada empresa em implantação.</li>
+      <li><strong>Atalhos centrais</strong> — para a agenda, para o cadastro de módulos e para o relatório de implantações.</li>
+    </ul>
+  </div>
+
+  <div class="feature">
+    <h3>4.6.2 Agendamentos de implantação</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> ver e gerenciar todos os agendamentos do tipo implantação em um único lugar.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Menu lateral → Implantação → Agendamentos de Implantação</div>
+    <ol class="steps">
+      <li>Use os filtros de período e cliente para refinar a lista.</li>
+      <li>Clique em um agendamento para abrir o detalhe e prosseguir com a finalização e o registro dos RATs.</li>
+    </ol>
+  </div>
+
+  <!-- 4.7 Monitor -->
+  <h2 id="agent-monitor">4.7 Monitor</h2>
+  <div class="feature">
+    <h3>4.7.1 Monitor de atendimentos em tempo real</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> acompanhar o ritmo de atendimento da equipe e identificar gargalos rapidamente.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Menu lateral → Clientes &amp; Empresas → Monitor</div>
+    <ol class="steps">
+      <li>Defina o <strong>período</strong> a ser monitorado (datas inicial e final, no formato DD/MM/AAAA).</li>
+      <li>Visualize os atendimentos por status, técnico, cliente ou módulo.</li>
+      <li>Atualize a tela usando o botão de recarregar ou aguarde a atualização automática.</li>
+    </ol>
+    <p>Cada linha representa um atendente e traz as colunas:</p>
+    <ul>
+      <li><strong>Nome</strong> — o atendente.</li>
+      <li><strong>Tickets Pendentes</strong> — chamados na fila ainda sem atendimento.</li>
+      <li><strong>Em Andamento</strong> — chamados que o atendente está tratando no momento.</li>
+      <li><strong>Cronograma</strong> — os agendamentos do dia do atendente, separados em <em>manhã</em> e <em>tarde</em>.</li>
+      <li><strong>Último Finalizado</strong> — o chamado mais recente que o atendente concluiu.</li>
+    </ul>
+  </div>
+
+  <!-- 4.8 Relatórios -->
+  <h2 id="agent-reports">4.8 Relatórios do atendente</h2>
+  <div class="feature">
+    <h3>4.8.1 Gerar relatórios operacionais</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> exportar relatórios de chamados, agendamentos e implantações para análise gerencial.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Menu lateral → Implantação → Relatório de Implantações (e demais relatórios)</div>
+    <ol class="steps">
+      <li>Selecione o <strong>tipo de relatório</strong>: clientes em implantação, por departamento, problemas diários, etc.</li>
+      <li>Defina os <strong>filtros</strong> (período, status, departamento, técnico).</li>
+      <li>Clique em <strong>Gerar relatório</strong>. O resultado é exibido em tela.</li>
+      <li>Use o botão de impressão do navegador (<kbd>Ctrl</kbd>+<kbd>P</kbd>) para gerar PDF.</li>
+    </ol>
+  </div>
+
+  <!-- 4.9 Tarefas -->
+  <h2 id="agent-tasks">4.9 Tarefas</h2>
+  <div class="feature">
+    <h3>4.9.1 Minhas tarefas</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> acompanhar e organizar as tarefas atribuídas a você — em especial as solicitações de desenvolvimento geradas a partir de chamados.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Menu lateral → Tarefas → Minhas Tarefas</div>
+    <ol class="steps">
+      <li>A tela lista suas tarefas com indicadores de <strong>pendentes</strong> e <strong>concluídas</strong>.</li>
+      <li>Use <strong>+ Nova tarefa</strong> para criar uma tarefa, informando título, descrição, projeto, módulo/submódulo e responsável.</li>
+      <li>Clique em <strong>Editar</strong> em uma tarefa para atualizar responsável, descrição e <strong>status</strong> sem sair da lista.</li>
+      <li>Atualize o status conforme a tarefa avança até a conclusão.</li>
+    </ol>
+    <div class="box info">
+      <div class="box-title">ℹ️ Informação</div>
+      <p>
+        Chamados abertos como <strong>Solicitação</strong> geram automaticamente uma tarefa correspondente,
+        para que a demanda de desenvolvimento seja acompanhada até a entrega.
+      </p>
+    </div>
+  </div>
+
+  <!-- 4.10 Conta -->
+  <h2 id="agent-account">4.10 Minha conta</h2>
+  <div class="feature">
+    <h3>4.10.1 Atualizar seus dados e preferências</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> manter seus dados de acesso atualizados e personalizar o comportamento do sistema.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Menu superior → Minha conta</div>
+    <p>A página é dividida em três blocos:</p>
+
+    <h4>Dados pessoais</h4>
+    <ol class="steps">
+      <li>Atualize seu <strong>E-mail</strong>.</li>
+      <li>Salve para confirmar a alteração.</li>
+    </ol>
+
+    <h4>Alterar senha</h4>
+    <ol class="steps">
+      <li>Informe a <strong>senha atual</strong>.</li>
+      <li>Defina e confirme a <strong>nova senha</strong>.</li>
+      <li>Clique em <strong>Salvar</strong>.</li>
+    </ol>
+
+    <h4>Preferências</h4>
+    <ul>
+      <li><strong>Taxa de atualização</strong> (em segundos): com que frequência o sistema atualiza listas em tempo real (mínimo 5s).</li>
+      <li><strong>Abrir chamado em nova aba</strong>: ao clicar num chamado, o detalhe abre em outra aba do navegador.</li>
+      <li><strong>Mostrar categoria do chamado</strong>: exibe ou não a categoria diretamente na lista.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ====================================================
+     5. PAINEL ADMINISTRATIVO
+     ==================================================== -->
+<section class="section" id="admin">
+  <div class="section-eyebrow">Capítulo 5</div>
+  <h1>Painel Administrativo</h1>
+  <p>
+    O painel administrativo concentra todas as <strong>configurações estruturais</strong> do sistema:
+    quem pode acessar, quais categorias e prioridades existem, como o SLA é calculado, quais módulos
+    cada cliente contratou, integração com WhatsApp e os relatórios gerenciais.
+  </p>
+
+  <div class="box info">
+    <div class="box-title">ℹ️ Quem pode acessar</div>
+    <p>
+      O painel administrativo só é exibido para usuários com perfil de <strong>Administrador</strong>.
+      Atendentes comuns não veem os itens desta seção.
+    </p>
+  </div>
+
+  <!-- 5.1 Admin dashboard -->
+  <div class="feature" id="admin-dashboard">
+    <h3>5.1 Dashboard administrativo</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> oferecer ao administrador um painel central com atalhos para todas as áreas de configuração.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Endereço /admin → login → dashboard administrativo</div>
+    <p>O dashboard administrativo é dividido em três grandes blocos:</p>
+    <ul>
+      <li><strong>Gestão do Sistema</strong> — Usuários, Categorias, Módulos, Departamentos.</li>
+      <li><strong>Helpdesk &amp; CRM</strong> — Painel de Suporte e CRM Feedback.</li>
+      <li><strong>Relatórios &amp; Analíticos</strong> — Tarefas por módulo, problemas diários, clientes em implantação.</li>
+    </ul>
+  </div>
+
+  <!-- 5.2 Usuários -->
+  <h2 id="admin-users">5.2 Gestão de usuários</h2>
+  <div class="feature">
+    <h3>5.2.1 Listar e criar usuários</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> cadastrar atendentes e administradores no sistema.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Painel administrativo → Usuários</div>
+    <ol class="steps">
+      <li>Veja a lista de usuários cadastrados. Use a busca para filtrar por nome ou e-mail.</li>
+      <li>Clique em <strong>+ Novo usuário</strong> (modal lateral).</li>
+      <li>Informe nome, e-mail e perfil (Administrador, Atendente, etc.).</li>
+      <li>Defina uma <strong>senha temporária</strong>. Ela será trocada pelo usuário no primeiro acesso.</li>
+      <li>Clique em <strong>Salvar usuário</strong>.</li>
+    </ol>
+  </div>
+  <div class="feature">
+    <h3>5.2.2 Resetar senha de outro usuário</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> permitir que o administrador gere uma nova senha temporária para um usuário que esqueceu a sua.
+    </div>
+    <ol class="steps">
+      <li>Na lista de usuários, clique no usuário desejado.</li>
+      <li>Acione o botão <strong>Resetar senha</strong>.</li>
+      <li>Informe e confirme a nova senha temporária.</li>
+      <li>Salve. O usuário será obrigado a trocá-la no próximo acesso.</li>
+    </ol>
+  </div>
+
+  <!-- 5.3 Categorias -->
+  <h2 id="admin-categories">5.3 Categorias</h2>
+  <div class="feature">
+    <h3>5.3.1 Categorias e subcategorias</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> organizar a árvore de categorias usada na abertura de chamados.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Painel administrativo → Categorias</div>
+    <ol class="steps">
+      <li>Na tela inicial, veja as categorias agrupadas por departamento.</li>
+      <li>Clique em <strong>+ Nova categoria</strong> ou <strong>+ Nova subcategoria</strong> conforme o caso.</li>
+      <li>Preencha <strong>Nome</strong>, <strong>Setor</strong>, <strong>Pai</strong> (quando subcategoria), <strong>Ordem</strong> e descrição.</li>
+      <li>Marque <strong>Visível</strong> e <strong>Ativa</strong> conforme a política da empresa.</li>
+      <li>Clique em <strong>Salvar</strong>.</li>
+    </ol>
+    <div class="box attention">
+      <div class="box-title">⚠️ Atenção</div>
+      <p>
+        Categorias inativas continuam funcionando para chamados antigos, mas <strong>não aparecem mais</strong>
+        para escolha em novos chamados. Inativar uma categoria muito usada pode afetar a fluência do atendimento.
+      </p>
+    </div>
+  </div>
+
+  <!-- 5.4 Departamentos -->
+  <h2 id="admin-departments">5.4 Departamentos</h2>
+  <div class="feature">
+    <h3>5.4.1 Cadastro de departamentos</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> definir os departamentos da empresa que aparecerão em chamados, agendamentos e categorias.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Painel administrativo → Departamentos</div>
+    <ol class="steps">
+      <li>Clique em <strong>+ Novo departamento</strong> (abre modal).</li>
+      <li>Informe nome (ex.: Suporte, Comercial, Implantação) e cor opcional.</li>
+      <li>Defina se está <strong>ativo</strong> e clique em <strong>Salvar</strong>.</li>
+    </ol>
+  </div>
+
+  <!-- 5.5 SLA -->
+  <h2 id="admin-sla">5.5 Configuração de SLA</h2>
+  <div class="feature">
+    <h3>5.5.1 Pesos das categorias e faixas de SLA</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> configurar o tempo máximo de atendimento dos chamados, com base no peso das categorias e nas faixas de SLA.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Painel administrativo → SLA</div>
+    <p>A tela é dividida em duas seções:</p>
+    <ul>
+      <li><strong>Pesos das categorias</strong> — define um peso explícito para cada categoria, usado no cálculo do SLA total do chamado.</li>
+      <li><strong>Faixas de SLA por peso total</strong> — para cada faixa de peso, define os tempos (em minutos) de <em>atenção</em>, <em>aviso</em> e <em>crítico</em>.</li>
+    </ul>
+    <ol class="steps">
+      <li>Ajuste o peso de cada categoria conforme a criticidade do problema típico.</li>
+      <li>Defina os tempos para cada faixa (em minutos).</li>
+      <li>Clique em <strong>Salvar SLA</strong>.</li>
+    </ol>
+    <div class="box info">
+      <div class="box-title">ℹ️ Como funciona</div>
+      <p>
+        Ao abrir um chamado, o sistema soma o peso das categorias e enquadra esse total em uma faixa de SLA.
+        A faixa dita o tempo até o estado de <em>atenção</em>, <em>aviso</em> e <em>crítico</em>, exibidos ao atendente.
+      </p>
+    </div>
+  </div>
+
+  <!-- 5.6 Helpdesk -->
+  <h2 id="admin-helpdesk">5.6 Helpdesk — Status, Prioridade, Origens e Módulos</h2>
+  <p>
+    A seção Helpdesk do painel administrativo concentra quatro CRUDs (Cadastros) usados ao longo
+    do atendimento. Todos seguem o mesmo padrão de tela: listagem + botão "Novo" + formulário modal.
+  </p>
+
+  <div class="feature">
+    <h3>5.6.1 Status de chamados</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> definir os estados pelos quais um chamado pode passar (Aberto, Em andamento, Aguardando cliente, Solicitação, Resolvido, etc.).
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Painel administrativo → Helpdesk → Status</div>
+    <ol class="steps">
+      <li>Clique em <strong>+ Novo status</strong>.</li>
+      <li>Informe nome, cor e ícone do status.</li>
+      <li>Marque flags especiais quando aplicável (ex.: "indica resolução", "indica solicitação").</li>
+      <li>Salve.</li>
+    </ol>
+  </div>
+
+  <div class="feature">
+    <h3>5.6.2 Prioridades</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> definir os níveis de prioridade que o atendente pode atribuir aos chamados.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Painel administrativo → Helpdesk → Prioridades</div>
+    <ol class="steps">
+      <li>Clique em <strong>+ Nova prioridade</strong>.</li>
+      <li>Informe nome (ex.: Baixa, Média, Alta, Crítica) e cor identificadora.</li>
+      <li>Salve.</li>
+    </ol>
+  </div>
+
+  <div class="feature">
+    <h3>5.6.3 Canais de origem</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> cadastrar os canais pelos quais um chamado pode ser aberto.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Painel administrativo → Helpdesk → Origens</div>
+    <ol class="steps">
+      <li>Clique em <strong>+ Nova origem</strong>.</li>
+      <li>Informe nome (ex.: Telefone, E-mail, WhatsApp, Portal, Presencial).</li>
+      <li>Defina se está ativa.</li>
+      <li>Salve.</li>
+    </ol>
+  </div>
+
+  <div class="feature">
+    <h3>5.6.4 Módulos contratados</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> registrar os módulos do produto que podem ser contratados pelos clientes (Fiscal, Vendas, Estoque, TEF, e-Commerce, etc.).
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Painel administrativo → Helpdesk → Módulos</div>
+    <ol class="steps">
+      <li>Clique em <strong>+ Novo módulo</strong>.</li>
+      <li>Informe nome e descrição.</li>
+      <li>Associe ao tipo de módulo correspondente, quando aplicável.</li>
+      <li>Salve.</li>
+    </ol>
+    <div class="box tip">
+      <div class="box-title">💡 Dica</div>
+      <p>
+        A vinculação dos módulos a cada cliente é feita no cadastro da empresa, em <em>Módulos contratados</em>.
+        Manter este cadastro coerente ajuda a equipe a saber rapidamente o que cada cliente usa.
+      </p>
+    </div>
+  </div>
+
+  <!-- 5.7 Implantação -->
+  <h2 id="admin-implantacao">5.7 Implantação — RAT, Grupos, Módulos e Tipos</h2>
+  <p>
+    A seção Implantação reúne quatro CRUDs usados para configurar como o sistema gera RATs,
+    organiza checklists e classifica agendamentos.
+  </p>
+
+  <div class="feature">
+    <h3>5.7.1 Checklist do RAT por módulo</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> definir os itens (checkboxes e campos de preenchimento) que aparecerão no RAT de cada módulo.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Painel administrativo → Implantação → RAT</div>
+    <ol class="steps">
+      <li>Clique em <strong>+ Novo item</strong>.</li>
+      <li>Informe o <strong>Módulo RAT</strong>, o <strong>Grupo</strong> (ver 5.7.2), o tipo de campo (checkbox, texto, número) e o rótulo do item.</li>
+      <li>Salve.</li>
+    </ol>
+  </div>
+
+  <div class="feature">
+    <h3>5.7.2 Grupos do checklist</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> organizar os itens do checklist em grupos lógicos dentro do RAT.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Painel administrativo → Implantação → Grupos</div>
+  </div>
+
+  <div class="feature">
+    <h3>5.7.3 Módulos de RAT</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> cadastrar os módulos específicos do RAT (podem coincidir com módulos contratados, mas têm checklists próprios).
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Painel administrativo → Implantação → Módulos RAT</div>
+  </div>
+
+  <div class="feature">
+    <h3>5.7.4 Tipos de agendamento</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> classificar os tipos de agendamento (visita técnica, consultoria, treinamento, etc.).
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Painel administrativo → Implantação → Tipos de agendamento</div>
+  </div>
+
+  <div class="feature">
+    <h3>5.7.5 Módulos de implantação por cliente</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> personalizar a configuração de implantação por cliente, definindo quais módulos serão entregues e em quais etapas.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Painel administrativo → Implantação → Módulos por cliente</div>
+    <ol class="steps">
+      <li>Selecione o cliente desejado.</li>
+      <li>Edite a lista de módulos a serem implantados e a ordem das etapas.</li>
+      <li>Salve.</li>
+    </ol>
+  </div>
+
+  <!-- 5.8 WhatsApp -->
+  <h2 id="admin-whatsapp">5.8 WhatsApp Business</h2>
+  <div class="feature">
+    <h3>5.8.1 Conexão da instância</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> conectar a conta WhatsApp Business da empresa para que o sistema possa enviar/receber mensagens.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Painel administrativo → WhatsApp Business</div>
+    <ol class="steps">
+      <li>Verifique o <strong>estado da conexão</strong> no topo da tela.</li>
+      <li>Caso esteja desconectado, clique para gerar um novo <strong>QR Code</strong>.</li>
+      <li>No celular, abra o WhatsApp → Configurações → <em>Dispositivos conectados</em> → <em>Conectar dispositivo</em> e leia o QR Code mostrado.</li>
+      <li>Aguarde alguns segundos. O painel passa a indicar <em>Conectado</em>.</li>
+      <li>Para desconectar, use o botão <strong>Logout</strong>.</li>
+    </ol>
+    <div class="box attention">
+      <div class="box-title">⚠️ Atenção</div>
+      <p>
+        Recomenda-se usar um número exclusivo de WhatsApp para o suporte, não vinculado a celulares pessoais.
+        Sair (logout) do dispositivo principal desconectará a integração e exigirá nova leitura do QR Code.
+      </p>
+    </div>
+  </div>
+
+  <div class="feature">
+    <h3>5.8.2 Configuração de expediente e atalhos</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> definir o horário em que o suporte está atendendo e cadastrar respostas-padrão rápidas.
+    </div>
+    <p>Na mesma tela do WhatsApp Business, role até <strong>Expediente WhatsApp</strong>:</p>
+    <ol class="steps">
+      <li>Defina <strong>Horário de início</strong> e <strong>Horário de fim</strong> do expediente.</li>
+      <li>Informe os <strong>dias de funcionamento</strong> (ex.: <code>Seg, Ter, Qua, Qui, Sex</code>).</li>
+      <li>Configure o <strong>Cooldown</strong> (em minutos) para evitar reenvios em massa fora do expediente.</li>
+      <li>Salve.</li>
+    </ol>
+    <p>Mais abaixo, em <strong>Atalhos de mensagem</strong>, configure respostas rápidas:</p>
+    <ol class="steps">
+      <li>Em <strong>Comando</strong>, defina o atalho (ex.: <code>/sefaz</code>).</li>
+      <li>Selecione o <strong>Departamento</strong> ao qual o atalho pertence.</li>
+      <li>Em <strong>Texto</strong>, escreva a mensagem-padrão (ex.: "Sefaz fora do ar. Favor aguardar.").</li>
+      <li>Marque como <strong>ativo</strong> e salve.</li>
+    </ol>
+    <div class="box tip">
+      <div class="box-title">💡 Dica</div>
+      <p>
+        Os atalhos podem ser usados pelo atendente no chat do chamado digitando <code>/atalho</code> no campo de mensagem.
+        Reduzem drasticamente o tempo de resposta para respostas frequentes.
+      </p>
+    </div>
+  </div>
+
+  <div class="feature">
+    <h3>5.8.3 Mensagens do bot</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> configurar as mensagens automáticas enviadas pelo bot ao cliente (boas-vindas, menus, fora de expediente).
+    </div>
+    <p>Mais abaixo, em <strong>Mensagens do Bot</strong>:</p>
+    <ol class="steps">
+      <li>Para cada etapa do fluxo, edite o texto exibido pelo bot.</li>
+      <li>Marque como <strong>ativa</strong> as mensagens em uso.</li>
+      <li>Salve as alterações.</li>
+    </ol>
+    <p>Logo abaixo, a aba <strong>Conversas Recentes</strong> lista todas as últimas interações com clientes para auditoria e supervisão.</p>
+  </div>
+
+  <!-- 5.9 CRM -->
+  <h2 id="admin-crm">5.9 CRM Feedback (formulários)</h2>
+  <div class="feature">
+    <h3>5.9.1 Construção dos formulários de feedback</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> montar os formulários que a equipe comercial usará para registrar feedback de clientes.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Painel administrativo → CRM Feedback</div>
+    <ol class="steps">
+      <li>Veja a lista de <strong>Formulários disponíveis</strong>.</li>
+      <li>Crie ou edite um formulário e adicione <strong>Elementos</strong> (campos de texto, seleção, checkbox, número, etc.).</li>
+      <li>Defina ordem, obrigatoriedade e rótulos.</li>
+      <li>Salve. Os formulários ficam disponíveis na área de CRM (capítulo 6).</li>
+    </ol>
+  </div>
+
+  <!-- 5.10 Relatórios -->
+  <h2 id="admin-reports">5.10 Relatórios gerenciais</h2>
+  <div class="feature">
+    <h3>5.10.1 Resumo diário por problema</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> consolidar, num único relatório, os problemas mais incidentes do dia.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Painel administrativo → Relatórios → Resumo Diário</div>
+  </div>
+  <div class="feature">
+    <h3>5.10.2 Clientes em implantação</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> visualizar, por gestor e por cliente, o andamento das implantações ativas.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Painel administrativo → Relatórios → Clientes em Implantação</div>
+  </div>
+  <div class="feature">
+    <h3>5.10.3 Tarefas de desenvolvimento</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> acompanhar tarefas dos times técnicos, agrupadas por cliente ou por módulo.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Painel administrativo → Tarefas → Relatórios (por cliente / por módulo)</div>
+  </div>
+
+  <!-- 5.11 Configurações -->
+  <h2 id="admin-settings">5.11 Configurações gerais e conta do administrador</h2>
+  <div class="feature">
+    <h3>5.11.1 Sua conta de administrador</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> manter atualizado o seu próprio cadastro de administrador (dados, senha e preferências).
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Painel administrativo → Configurações</div>
+    <p>A tela é idêntica à do atendente (ver seção 4.10): dados pessoais, alteração de senha e preferências de visualização.</p>
+  </div>
+</section>
+
+<!-- ====================================================
+     6. CRM
+     ==================================================== -->
+<section class="section" id="crm">
+  <div class="section-eyebrow">Capítulo 6</div>
+  <h1>CRM — Feedback de Clientes</h1>
+  <p>
+    O módulo CRM permite que a equipe comercial registre, por cliente, informações qualitativas
+    sobre cada contato: descrição da ligação, sugestões e reclamações. Os formulários são
+    definidos pelo administrador (ver 5.9).
+  </p>
+
+  <div class="feature" id="crm-list">
+    <h3>6.1 Lista de feedback</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> consultar todos os feedbacks registrados, com filtros por cliente e período.
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">Menu superior → CRM → Feedback</div>
+    <ol class="steps">
+      <li>Selecione o <strong>formulário</strong> a ser visualizado.</li>
+      <li>Filtre por cliente ou período.</li>
+      <li>Clique em um registro para abrir detalhes.</li>
+    </ol>
+  </div>
+
+  <div class="feature" id="crm-create">
+    <h3>6.2 Registrar um novo feedback</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> capturar a percepção do cliente após um contato (ligação, visita, atendimento).
+    </div>
+    <p><strong>Como acessar:</strong></p>
+    <div class="path">CRM → Feedback → + Novo feedback</div>
+    <ol class="steps">
+      <li>Selecione o <strong>cliente</strong>. Se ele já tem feedbacks anteriores, o histórico aparece na lateral.</li>
+      <li>Informe o <strong>contato</strong> (pessoa entrevistada).</li>
+      <li>Preencha os campos dinâmicos do formulário (texto, seleção, checkboxes — definidos pelo administrador).</li>
+      <li>Preencha <strong>Descrição da ligação</strong>, <strong>Sugestões</strong> e <strong>Reclamações</strong>.</li>
+      <li>Clique em <strong>Salvar feedback</strong>.</li>
+    </ol>
+  </div>
+
+  <div class="feature" id="crm-retorno">
+    <h3>6.3 Retorno e histórico do cliente</h3>
+    <div class="feature-goal">
+      <strong>Objetivo:</strong> registrar o retorno dado a um feedback (ex.: comunicar uma decisão para o cliente após reclamação).
+    </div>
+    <ol class="steps">
+      <li>Abra o feedback desejado.</li>
+      <li>Clique em <strong>Registrar retorno</strong>.</li>
+      <li>Descreva o retorno no campo <strong>Retorno</strong> e salve.</li>
+      <li>O retorno aparece no histórico recente do cliente, junto a todos os feedbacks anteriores.</li>
+    </ol>
+    <div class="box tip">
+      <div class="box-title">💡 Dica</div>
+      <p>
+        Para <strong>cancelar</strong> um feedback (ex.: registrado por engano), use o botão de cancelamento
+        e informe o motivo. Cancelamentos ficam registrados para auditoria, mas o feedback some das listas operacionais.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     7. FAQ
+     ==================================================== -->
+<section class="section" id="faq">
+  <div class="section-eyebrow">Capítulo 7</div>
+  <h1>Perguntas frequentes (FAQ)</h1>
+
+  <div class="faq-item">
+    <div class="faq-q">Não recebi o e-mail de redefinição de senha. O que faço?</div>
+    <div class="faq-a">
+      Primeiro verifique a pasta de spam. Em seguida confirme se o e-mail informado é o mesmo cadastrado
+      no sistema. Se ainda assim não receber, peça ao seu administrador para resetar sua senha manualmente
+      (ver seção 5.2.2). O administrador pode gerar uma senha temporária imediatamente.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">O cliente apareceu como "Bloqueado financeiramente" ao abrir chamado. Por que?</div>
+    <div class="faq-a">
+      O sistema integra a situação financeira do cliente. Em casos de pendência, o botão de salvar pode
+      ser bloqueado automaticamente para preservar a política comercial. Acione a coordenação ou
+      o setor financeiro para liberar a abertura, se aplicável.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Posso atender vários chamados ao mesmo tempo?</div>
+    <div class="faq-a">
+      Sim. Você pode marcar a opção <em>"Abrir chamado em nova aba"</em> nas preferências da sua conta
+      (seção 4.10). Cada chamado abrirá numa aba separada do navegador, e você poderá alternar entre eles
+      sem perder contexto.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">A integração com WhatsApp caiu. Como reconectar?</div>
+    <div class="faq-a">
+      O administrador deve acessar <em>Painel administrativo → WhatsApp Business</em>, gerar novo QR Code
+      e ler com o celular do suporte. Em alguns minutos, a conexão volta a ficar disponível
+      para os atendentes.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Como saber em qual versão do produto o cliente está?</div>
+    <div class="faq-a">
+      No cadastro do chamado ou da empresa, há os campos <em>Versão Base</em> e <em>Release</em>.
+      Eles devem ser mantidos atualizados pelos atendentes a cada nova atualização do cliente.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Excluí um chamado por engano. É possível recuperar?</div>
+    <div class="faq-a">
+      Em geral, exclusões são lógicas (o chamado fica oculto, mas continua armazenado). Solicite ao
+      administrador a recuperação. Para mudanças menores, o histórico de auditoria (4.2.8) já
+      registra todas as alterações.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">O sistema funciona no celular?</div>
+    <div class="faq-a">
+      Sim, a interface é responsiva e funciona bem em navegadores de smartphones/tablets atualizados.
+      Há também recursos especificamente desenhados para uso em campo, como o RAT impresso e a versão
+      mobile da lista de tarefas.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Como recuperar conhecimento de chamados antigos?</div>
+    <div class="faq-a">
+      Use a <strong>EasyWiki</strong> (4.3). Sempre que um chamado for resolvido com uma solução
+      reaproveitável, crie um artigo na EasyWiki com o título do problema, a solução e tags
+      relevantes. A próxima ocorrência será encontrada em segundos.
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     8. SUPORTE E CONTATO
+     ==================================================== -->
+<section class="section" id="suporte">
+  <div class="section-eyebrow">Capítulo 8</div>
+  <h1>Suporte e contato</h1>
+  <p>
+    Em caso de dúvidas sobre o uso do sistema, sugestões de melhoria ou indisponibilidade,
+    entre em contato com a equipe da Amura Sistemas por um dos canais oficiais abaixo.
+  </p>
+
+  <div class="contact-card">
+    <h3>Amura Sistemas</h3>
+    <p>Estamos prontos para apoiar você no que precisar.</p>
+
+    <div class="contact-grid">
+      <div class="item">
+        <div class="label">Site oficial</div>
+        <div class="value">amura.com.br</div>
+      </div>
+      <div class="item">
+        <div class="label">E-mail de suporte</div>
+        <div class="value">suporte@amura.com.br</div>
+      </div>
+      <div class="item">
+        <div class="label">WhatsApp</div>
+        <div class="value">Disponível no rodapé do site oficial</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="box info">
+    <div class="box-title">ℹ️ Horário de atendimento</div>
+    <p>
+      O atendimento humano segue o expediente configurado pela sua empresa (seção 5.8.2).
+      Fora do expediente, o WhatsApp continua disponível para registro de chamados;
+      eles serão atendidos assim que a equipe retornar.
+    </p>
+  </div>
+
+  <div class="box tip">
+    <div class="box-title">💡 Antes de abrir um chamado</div>
+    <p>
+      Antes de acionar o suporte, vale tentar:
+    </p>
+    <ul class="tight" style="margin-top:4pt;">
+      <li>Consultar a EasyWiki — boa parte dos problemas já tem solução documentada.</li>
+      <li>Atualizar a página com <kbd>F5</kbd> ou <kbd>Ctrl</kbd>+<kbd>F5</kbd>.</li>
+      <li>Verificar se outra pessoa da equipe já está com a mesma dúvida (Monitor).</li>
+    </ul>
+  </div>
+
+  <hr>
+  <p class="muted center">
+    Este manual foi preparado pela equipe da Amura Sistemas — Setembro/2026, versão 2.0.<br>
+    Em caso de divergências entre o documento e o sistema, prevalece o comportamento da plataforma em produção.
+  </p>
+</section>
+
+</body>
+</html>

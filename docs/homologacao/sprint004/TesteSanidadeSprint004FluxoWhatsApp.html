@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Sanidade Sprint 004 - Fluxo WhatsApp</title>
+    <style>
+        :root {
+            --text: #111827;
+            --muted: #4b5563;
+            --line: #d1d5db;
+            --soft: #f3f4f6;
+            --panel: #ffffff;
+            --brand: #166534;
+            --brand-soft: #f0fdf4;
+            --warn: #92400e;
+            --warn-soft: #fef3c7;
+            --danger: #991b1b;
+            --danger-soft: #fef2f2;
+            --ok: #166534;
+            --ok-soft: #f0fdf4;
+            --info: #1d4ed8;
+            --info-soft: #eff6ff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "DejaVu Sans", "Noto Sans", Arial, sans-serif;
+            color: var(--text);
+            background: #f5f5f5;
+            line-height: 1.55;
+        }
+
+        main {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 32px 24px 64px;
+        }
+
+        .page,
+        .scenario {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(17, 24, 39, 0.06);
+        }
+
+        .page + .scenario,
+        .scenario + .scenario {
+            margin-top: 24px;
+        }
+
+        h1, h2, h3, h4 {
+            margin-top: 0;
+            color: #0f172a;
+        }
+
+        h1 {
+            font-size: 28px;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin: 0 0 12px;
+        }
+
+        ul, ol {
+            margin: 0 0 14px 18px;
+            padding: 0;
+        }
+
+        li + li {
+            margin-top: 6px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            margin-bottom: 10px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: var(--brand-soft);
+            color: var(--brand);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .lede {
+            font-size: 16px;
+            color: var(--muted);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin: 18px 0;
+        }
+
+        .card {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 16px;
+            background: #fff;
+        }
+
+        .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 12px 0 18px;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: var(--soft);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .note,
+        .warning,
+        .success,
+        .info {
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin: 16px 0;
+            border: 1px solid var(--line);
+        }
+
+        .note {
+            background: var(--info-soft);
+            border-color: #bfdbfe;
+        }
+
+        .warning {
+            background: var(--warn-soft);
+            border-color: #fcd34d;
+            color: var(--warn);
+        }
+
+        .success {
+            background: var(--ok-soft);
+            border-color: #86efac;
+            color: var(--ok);
+        }
+
+        .info {
+            background: var(--info-soft);
+            border-color: #93c5fd;
+            color: var(--info);
+        }
+
+        .danger {
+            background: var(--danger-soft);
+            border: 1px solid #fecaca;
+            color: var(--danger);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin: 16px 0;
+        }
+
+        .checklist {
+            border: 1px dashed #9ca3af;
+            border-radius: 14px;
+            padding: 16px;
+            margin-top: 18px;
+        }
+
+        .result-line {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--line);
+            font-weight: 700;
+        }
+
+        .toc {
+            columns: 2;
+            column-gap: 32px;
+            margin: 18px 0 6px;
+        }
+
+        .toc li {
+            break-inside: avoid;
+        }
+
+        .small {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+
+        code {
+            font-family: "DejaVu Sans Mono", Consolas, monospace;
+            background: #f3f4f6;
+            padding: 1px 4px;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0 0;
+            font-size: 14px;
+        }
+
+        th,
+        td {
+            border: 1px solid var(--line);
+            padding: 10px 12px;
+            vertical-align: top;
+            text-align: left;
+        }
+
+        th {
+            background: var(--soft);
+        }
+
+        @media print {
+            body {
+                background: #fff;
+            }
+
+            main {
+                max-width: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .page,
+            .scenario {
+                box-shadow: none;
+                border-radius: 0;
+                border: none;
+                padding: 18mm 14mm;
+                margin: 0;
+            }
+
+            .page + .scenario,
+            .scenario + .scenario {
+                margin-top: 0;
+            }
+
+            .page-break {
+                page-break-after: always;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .toc {
+                columns: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+<main>
+    <section class="page page-break">
+        <span class="eyebrow">Roteiro Manual</span>
+        <h1>Teste de Sanidade Sprint 004 - Fluxo WhatsApp</h1>
+        <p class="lede">
+            Documento manual para homologação do canal de atendimento via WhatsApp após os ajustes de conexão,
+            painel administrativo, webhook e respostas do chatbot. O objetivo é permitir que o cliente execute
+            o teste sem depender de comandos técnicos nem de apoio do time durante cada etapa.
+        </p>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3>Objetivo</h3>
+                <p>Validar se o número oficial da empresa está conectado, se o bot responde no próprio WhatsApp e se o fluxo completo de atendimento continua funcional.</p>
+                <p>O teste cobre painel administrativo, menu inicial, abertura de chamado, consulta de status, atendimento humano e fallback quando o telefone não identifica o cliente.</p>
+            </div>
+            <div class="card">
+                <h3>Perfis e recursos necessários</h3>
+                <ul>
+                    <li>1 número de celular para atuar como cliente de teste</li>
+                    <li>1 número oficial da empresa já conectado ao WhatsApp</li>
+                    <li>1 usuário administrador com acesso a <code>/admin/whatsapp</code></li>
+                    <li>1 usuário agente para consultar os tickets gerados</li>
+                    <li>Acesso ao painel administrativo e à lista de tickets</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Dados para preencher antes da execução</h3>
+            <ul>
+                <li>Número oficial validado no painel do WhatsApp: ________________________________________</li>
+                <li>Número de teste vinculado a um cliente já cadastrado: _________________________________</li>
+                <li>Nome do cliente esperado para autoidentificação: _____________________________________</li>
+                <li>Número alternativo sem vínculo cadastrado, se houver: ________________________________</li>
+                <li>Usuário agente para validação do ticket: ______________________________________________</li>
+                <li>Usuário administrador para validação do painel: _______________________________________</li>
+                <li>Data/hora da execução: ______________________________________________________________</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <h3>Ponto importante antes do teste</h3>
+            <ul>
+                <li>O chatbot responde na própria conversa do WhatsApp. Não existe uma tela separada de "chatbot" dentro do sistema.</li>
+                <li>O painel <code>/admin/whatsapp</code> é usado para monitorar a conexão da instância e as conversas recebidas.</li>
+                <li>Se o painel estiver em estado diferente de <strong>Ativo</strong> e <strong>Conectado</strong>, o teste funcional não deve começar.</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <h3>Como interpretar os status do painel</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Status visto na tela</th>
+                        <th>Significado</th>
+                        <th>Ação recomendada</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Ativo</strong> + <strong>Conectado</strong></td>
+                        <td>Instância conectada e envio automático habilitado.</td>
+                        <td>Prosseguir com o teste.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Conectado sem envio</strong></td>
+                        <td>Instância conectada, mas integração desabilitada para responder.</td>
+                        <td>Não iniciar o teste. Acionar o time técnico.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Aguardando conexão</strong> ou <strong>Inicializando serviço</strong></td>
+                        <td>A Evolution está subindo ou aguardando gerar QR Code.</td>
+                        <td>Aguardar estabilização antes de testar.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Desconectado</strong></td>
+                        <td>A linha oficial não está autenticada.</td>
+                        <td>Gerar novo QR Code e reconectar antes do teste.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Não configurado</strong></td>
+                        <td>Há falha de configuração do ambiente.</td>
+                        <td>Encerrar homologação e devolver ao time técnico.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h3>Índice dos cenários</h3>
+            <ol class="toc">
+                <li>Pré-checagem operacional no painel administrativo</li>
+                <li>Acesso inicial e apresentação do menu</li>
+                <li>Abertura de chamado com identificação automática por telefone</li>
+                <li>Consulta de status do último chamado</li>
+                <li>Solicitação de atendimento humano</li>
+                <li>Fluxo alternativo sem identificação automática da empresa</li>
+            </ol>
+        </div>
+
+        <p class="small">
+            Atualizado após os ajustes de QR Code, recuperação automática de instância, configuração de webhook da Evolution,
+            ativação de envio real do bot e alinhamento do status visual do painel administrativo.
+        </p>
+    </section>
+
+    <section class="scenario page-break">
+        <h2>1. Pré-checagem operacional no painel administrativo</h2>
+        <div class="meta">
+            <span class="pill">Canal: Sistema Interno</span>
+            <span class="pill">Prioridade: Bloqueador</span>
+            <span class="pill">Tela: /admin/whatsapp</span>
+        </div>
+
+        <h3>Objetivo</h3>
+        <p>Garantir que a linha oficial esteja realmente pronta para responder antes de iniciar qualquer mensagem com o cliente de teste.</p>
+
+        <h3>Passos</h3>
+        <ol>
+            <li>Acesse o painel administrativo em <code>/admin/whatsapp</code>.</li>
+            <li>Confira o selo principal no topo da página.</li>
+            <li>Confira o card <strong>Conexão da Instância</strong>.</li>
+            <li>Se necessário, clique em <strong>Atualizar status</strong>.</li>
+            <li>Valide se o estado final ficou <strong>Ativo</strong> no topo e <strong>Conectado</strong> no card da instância.</li>
+            <li>Confirme se o número oficial exibido corresponde ao número que será testado no WhatsApp.</li>
+        </ol>
+
+        <h3>Resultado esperado</h3>
+        <ul>
+            <li>O topo do painel mostra <strong>Ativo</strong>.</li>
+            <li>O card da instância mostra <strong>Conectado</strong>.</li>
+            <li>Não há aviso de <strong>Conectado sem envio</strong>, <strong>Desconectado</strong> ou <strong>Aguardando conexão</strong>.</li>
+        </ul>
+
+        <div class="danger">
+            <strong>Falha bloqueadora:</strong> se a tela mostrar <strong>Conectado sem envio</strong>, a instância pode até estar autenticada,
+            mas o bot não responderá no WhatsApp. Nesse caso, o teste funcional deve parar nesse ponto.
+        </div>
+
+        <div class="checklist">
+            <h3>Evidência sugerida</h3>
+            <ul>
+                <li>Print completo do topo do painel.</li>
+                <li>Print do card <strong>Conexão da Instância</strong>.</li>
+            </ul>
+            <p class="result-line">Resultado do cenário: [ ] Aprovado [ ] Aprovado com ressalvas [ ] Reprovado [ ] Bloqueado</p>
+        </div>
+    </section>
+
+    <section class="scenario page-break">
+        <h2>2. Acesso inicial e apresentação do menu</h2>
+        <div class="meta">
+            <span class="pill">Canal: WhatsApp</span>
+            <span class="pill">Prioridade: Alta</span>
+            <span class="pill">Entrada: linha oficial da empresa</span>
+        </div>
+
+        <h3>Objetivo</h3>
+        <p>Confirmar que o primeiro contato pelo WhatsApp recebe uma resposta automática com menu utilizável por um usuário real.</p>
+
+        <h3>Passos</h3>
+        <ol>
+            <li>Abra a conversa com o número oficial validado no cenário 1.</li>
+            <li>Envie uma saudação simples, como <strong>Oi</strong> ou <strong>Olá</strong>.</li>
+            <li>Aguarde a resposta automática.</li>
+            <li>Valide se o menu apresenta as opções de abrir chamado, consultar status e falar com atendente.</li>
+            <li>Sem sair da tela, confirme no painel administrativo se uma nova conversa apareceu em <code>/admin/whatsapp</code>.</li>
+        </ol>
+
+        <h3>Resultado esperado</h3>
+        <ul>
+            <li>A resposta chega sem intervenção humana.</li>
+            <li>O texto do menu é curto, claro e numerado.</li>
+            <li>O painel administrativo passa a exibir a nova conversa recebida.</li>
+        </ul>
+
+        <h3>Usabilidade</h3>
+        <ul>
+            <li>O cliente entende o que fazer só lendo o menu.</li>
+            <li>Não existe texto técnico nem instrução interna exposta na conversa.</li>
+            <li>O menu é legível no celular, sem excesso de informações.</li>
+        </ul>
+
+        <div class="checklist">
+            <h3>Evidência sugerida</h3>
+            <ul>
+                <li>Print da mensagem enviada.</li>
+                <li>Print da resposta com o menu.</li>
+                <li>Print da conversa aparecendo no painel administrativo.</li>
+            </ul>
+            <p class="result-line">Resultado do cenário: [ ] Aprovado [ ] Aprovado com ressalvas [ ] Reprovado [ ] Bloqueado</p>
+        </div>
+    </section>
+
+    <section class="scenario page-break">
+        <h2>3. Abertura de chamado com identificação automática por telefone</h2>
+        <div class="meta">
+            <span class="pill">Canais: WhatsApp e Sistema Interno</span>
+            <span class="pill">Prioridade: Bloqueador</span>
+            <span class="pill">Pré-requisito: número vinculado a um cliente</span>
+        </div>
+
+        <h3>Objetivo</h3>
+        <p>Garantir que um número já associado a cliente seja reconhecido automaticamente e que o ticket seja criado no sistema com os dados corretos.</p>
+
+        <h3>Passos</h3>
+        <ol>
+            <li>No menu inicial, responda <strong>1</strong> para abrir chamado.</li>
+            <li>Informe o nome do solicitante.</li>
+            <li>Valide se o bot reconhece a empresa pelo telefone e segue direto para a seleção de área.</li>
+            <li>Escolha a área desejada, como <strong>1 - Suporte Técnico</strong>.</li>
+            <li>Descreva um problema realista em linguagem simples.</li>
+            <li>Opcional: envie um print ou PDF curto.</li>
+            <li>Digite <strong>confirmar</strong> quando terminar os anexos.</li>
+            <li>Revise o resumo apresentado pelo bot.</li>
+            <li>Digite <strong>confirmar</strong> novamente para abrir o chamado.</li>
+            <li>Acesse o sistema interno e localize o ticket recém-criado.</li>
+            <li>Valide origem, cliente, contato, assunto e conteúdo do ticket.</li>
+        </ol>
+
+        <h3>Resultado esperado</h3>
+        <ul>
+            <li>O bot identifica a empresa automaticamente pelo telefone.</li>
+            <li>O resumo mostra nome, empresa, área, problema e quantidade de anexos.</li>
+            <li>O WhatsApp retorna confirmação final com o número do chamado.</li>
+            <li>O ticket aparece no sistema com origem WhatsApp e vínculo correto com o cliente.</li>
+        </ul>
+
+        <div class="success">
+            <strong>Critério de aprovação:</strong> o usuário consegue concluir a abertura sem precisar informar manualmente a empresa
+            quando o número já está vinculado a um cliente válido.
+        </div>
+
+        <h3>Usabilidade</h3>
+        <ul>
+            <li>O resumo antes da criação precisa ser legível e suficiente para revisão.</li>
+            <li>O comando <code>confirmar</code> deve ser aceito de forma consistente.</li>
+            <li>A mensagem final deve deixar claro que o chamado foi aberto e qual é o número de referência.</li>
+        </ul>
+
+        <div class="checklist">
+            <h3>Evidência sugerida</h3>
+            <ul>
+                <li>Print da etapa em que a empresa é identificada automaticamente.</li>
+                <li>Print do resumo do chamado no WhatsApp.</li>
+                <li>Print da confirmação final com número do ticket.</li>
+                <li>Print do ticket no sistema interno.</li>
+            </ul>
+            <p class="result-line">Resultado do cenário: [ ] Aprovado [ ] Aprovado com ressalvas [ ] Reprovado [ ] Bloqueado</p>
+        </div>
+    </section>
+
+    <section class="scenario page-break">
+        <h2>4. Consulta de status do último chamado</h2>
+        <div class="meta">
+            <span class="pill">Canal: WhatsApp</span>
+            <span class="pill">Prioridade: Alta</span>
+            <span class="pill">Pré-requisito: existir chamado criado no cenário 3</span>
+        </div>
+
+        <h3>Objetivo</h3>
+        <p>Confirmar que o usuário consegue consultar o status do último chamado sem abrir ticket novo.</p>
+
+        <h3>Passos</h3>
+        <ol>
+            <li>Inicie nova interação na mesma conversa ou envie nova saudação.</li>
+            <li>Quando o menu reaparecer, responda <strong>2</strong>.</li>
+            <li>Valide se o bot retorna o número do chamado, assunto, status atual e data de abertura.</li>
+            <li>Confirme no sistema interno se o status exibido na conversa corresponde ao ticket real.</li>
+        </ol>
+
+        <h3>Resultado esperado</h3>
+        <ul>
+            <li>O sistema localiza o chamado mais recente do cliente ou do número de telefone.</li>
+            <li>A resposta informa claramente qual ticket foi encontrado.</li>
+            <li>Após a consulta, a conversa continua utilizável para novas ações.</li>
+        </ul>
+
+        <h3>Usabilidade</h3>
+        <ul>
+            <li>A mensagem de status deve ser objetiva e escaneável em tela pequena.</li>
+            <li>O assunto retornado deve ajudar o cliente a reconhecer o chamado consultado.</li>
+            <li>O status exibido deve ser um nome compreensível de negócio, nunca código interno.</li>
+        </ul>
+
+        <div class="checklist">
+            <h3>Evidência sugerida</h3>
+            <ul>
+                <li>Print do menu da nova interação.</li>
+                <li>Print da resposta contendo o status do chamado.</li>
+                <li>Print do ticket interno com o mesmo status.</li>
+            </ul>
+            <p class="result-line">Resultado do cenário: [ ] Aprovado [ ] Aprovado com ressalvas [ ] Reprovado [ ] Bloqueado</p>
+        </div>
+    </section>
+
+    <section class="scenario page-break">
+        <h2>5. Solicitação de atendimento humano</h2>
+        <div class="meta">
+            <span class="pill">Canais: WhatsApp e Sistema Interno</span>
+            <span class="pill">Prioridade: Alta</span>
+            <span class="pill">Entrada: opção 3 do menu</span>
+        </div>
+
+        <h3>Objetivo</h3>
+        <p>Validar o transbordo para atendimento humano e a visibilidade da demanda para administradores e agentes no sistema interno.</p>
+
+        <h3>Passos</h3>
+        <ol>
+            <li>No menu do WhatsApp, responda <strong>3</strong>.</li>
+            <li>Valide se o bot informa que a conversa foi encaminhada para um atendente.</li>
+            <li>Entre no sistema interno com usuário administrador.</li>
+            <li>Acesse o painel do WhatsApp e localize a conversa encaminhada.</li>
+            <li>Opcional: envie mais uma mensagem após o handover e valide se ela continua aparecendo no histórico da conversa.</li>
+            <li>Valide se o time interno consegue localizar a conversa sem depender de banco ou console.</li>
+        </ol>
+
+        <h3>Resultado esperado</h3>
+        <ul>
+            <li>O WhatsApp responde confirmando a transferência para humano.</li>
+            <li>A conversa fica disponível para acompanhamento no painel administrativo.</li>
+            <li>Após o handover, o bot não disputa a conversa com o atendente.</li>
+        </ul>
+
+        <div class="note">
+            <strong>Como julgar a etapa:</strong> se a mensagem de handover aparece no WhatsApp, mas o time interno não consegue
+            localizar a conversa no painel, classifique como falha alta, porque a operação fica sem visibilidade.
+        </div>
+
+        <h3>Usabilidade</h3>
+        <ul>
+            <li>A mensagem ao cliente deve indicar claramente que ele será atendido por uma pessoa.</li>
+            <li>O painel interno precisa oferecer um caminho visível para localizar a conversa.</li>
+            <li>Se houver horário de atendimento no texto, ele deve ser coerente com a operação real.</li>
+        </ul>
+
+        <div class="checklist">
+            <h3>Evidência sugerida</h3>
+            <ul>
+                <li>Print da confirmação de atendimento humano no WhatsApp.</li>
+                <li>Print da conversa correspondente no painel administrativo.</li>
+                <li>Print da mensagem adicional após o handover, se executada.</li>
+            </ul>
+            <p class="result-line">Resultado do cenário: [ ] Aprovado [ ] Aprovado com ressalvas [ ] Reprovado [ ] Bloqueado</p>
+        </div>
+    </section>
+
+    <section class="scenario">
+        <h2>6. Fluxo alternativo sem identificação automática da empresa</h2>
+        <div class="meta">
+            <span class="pill">Canal: WhatsApp</span>
+            <span class="pill">Prioridade: Média</span>
+            <span class="pill">Pré-requisito opcional: número sem vínculo cadastrado</span>
+        </div>
+
+        <h3>Objetivo</h3>
+        <p>Validar o fallback quando o número do cliente não está vinculado a uma empresa cadastrada.</p>
+
+        <h3>Passos</h3>
+        <ol>
+            <li>Use um número alternativo sem vínculo conhecido, se disponível.</li>
+            <li>Repita o início do cenário 3 até a etapa do nome.</li>
+            <li>Valide se o bot solicita o nome da empresa.</li>
+            <li>Informe a empresa manualmente e conclua a abertura do chamado.</li>
+            <li>No sistema interno, valide se o chamado foi criado e se a triagem ficou rastreável.</li>
+        </ol>
+
+        <h3>Resultado esperado</h3>
+        <ul>
+            <li>Quando o telefone não é reconhecido, o bot pede a empresa em vez de travar.</li>
+            <li>O fluxo continua até a abertura do chamado.</li>
+            <li>O suporte interno consegue identificar que houve triagem manual da empresa.</li>
+        </ul>
+
+        <div class="danger">
+            <strong>Registrar falha:</strong> se o bot não reconhece o telefone e também não oferece caminho alternativo
+            para informar a empresa, o fluxo deve ser classificado como bloqueador para clientes novos ou números não cadastrados.
+        </div>
+
+        <h3>Usabilidade</h3>
+        <ul>
+            <li>O pedido do nome da empresa deve ser direto e compreensível.</li>
+            <li>Se a empresa não for encontrada exatamente, o fluxo não deve abandonar o usuário sem orientação.</li>
+            <li>O texto do bot deve evitar culpa no usuário quando não encontrar a empresa.</li>
+        </ul>
+
+        <div class="checklist">
+            <h3>Evidência sugerida</h3>
+            <ul>
+                <li>Print da etapa em que o bot solicita a empresa.</li>
+                <li>Print do resumo final do chamado.</li>
+                <li>Print do ticket correspondente no sistema interno.</li>
+            </ul>
+            <p class="result-line">Resultado do cenário: [ ] Aprovado [ ] Aprovado com ressalvas [ ] Reprovado [ ] Bloqueado</p>
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, initial-scale=1.0, user-scalable=no">
+    <title>TV Dashboard — Monitoramento de Chamados</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+        }
+
+        /* Fixed 1920x1080 Canvas that scales automatically to fit any TV/Monitor browser */
+        #tv-canvas {
+            width: 1920px;
+            height: 1080px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: 0 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 36px 20px 24px;
+            gap: 18px;
+        }
+
+        /* Custom scrollbar for TV table/list views */
+        .scrollable-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .scrollable-content::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        .scrollable-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.08);
+            border-radius: 4px;
+        }
+        .scrollable-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="tv-canvas">
+
+        <!-- ─── HEADER ─── -->
+        <header class="flex items-center justify-between px-2 bg-transparent shrink-0 h-[64px]">
+            <!-- Company Logo -->
+            <div class="flex items-center min-w-[160px]">
+                <img src="{{ asset('Logo-Escuro.png') }}" alt="Amura Sistemas" class="h-14 w-auto object-contain">
+            </div>
+
+            <!-- Central Digital Clock -->
+            <div class="flex justify-center items-baseline font-sans">
+                <span id="clock-time" class="text-6xl font-black tracking-tight text-slate-800">00:00</span>
+                <span id="clock-seconds" class="text-4xl font-extrabold text-slate-400 ml-2 font-mono">00</span>
+            </div>
+
+            <!-- Date on the Right -->
+            <div class="text-right text-lg font-bold text-slate-500/90 tracking-wide min-w-[160px]" id="current-date">
+                Carregando data...
+            </div>
+        </header>
+
+        <!-- ─── KPI SECTION ─── -->
+        <section class="grid grid-cols-4 gap-5 shrink-0 h-[140px]">
+            <!-- KPI 1: Chamados em Aberto -->
+            <div class="bg-white border border-slate-100 rounded-3xl p-5 flex flex-col justify-between shadow-[0_4px_20px_rgba(0,0,0,0.015)] relative overflow-hidden">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-extrabold text-slate-400 uppercase tracking-widest">Chamados em Aberto</span>
+                    <svg class="h-6 w-6 text-blue-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0a2 2 0 01-2 2H6a2 2 0 01-2-2m16 0V9a2 2 0 00-2-2H6a2 2 0 00-2 2v4" />
+                    </svg>
+                </div>
+                <div class="mt-1">
+                    <span id="kpi-open" class="text-5xl font-black text-[#1d4ed8] tracking-tight">--</span>
+                    <p class="text-xs text-slate-400 mt-1 font-semibold">aguardando atendimento</p>
+                </div>
+            </div>
+
+            <!-- KPI 2: Fechados Hoje -->
+            <div class="bg-white border border-slate-100 rounded-3xl p-5 flex flex-col justify-between shadow-[0_4px_20px_rgba(0,0,0,0.015)] relative overflow-hidden">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-extrabold text-slate-400 uppercase tracking-widest">Fechados Hoje</span>
+                    <svg class="h-6 w-6 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="mt-1">
+                    <span id="kpi-closed" class="text-5xl font-black text-emerald-600 tracking-tight">--</span>
+                    <p class="text-xs text-slate-400 mt-1 font-semibold">concluídos hoje</p>
+                </div>
+            </div>
+
+            <!-- KPI 3: Em Atraso (SLA) -->
+            <div class="bg-white border border-slate-100 rounded-3xl p-5 flex flex-col justify-between shadow-[0_4px_20px_rgba(0,0,0,0.015)] relative overflow-hidden">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-extrabold text-slate-400 uppercase tracking-widest">Em Atraso (SLA)</span>
+                    <svg class="h-6 w-6 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="mt-1">
+                    <span id="kpi-sla" class="text-5xl font-black text-red-600 tracking-tight">--</span>
+                    <p class="text-xs text-slate-400 mt-1 font-semibold">ação imediata</p>
+                </div>
+            </div>
+
+            <!-- KPI 4: Usuários Ativos -->
+            <div class="bg-white border border-slate-100 rounded-3xl p-5 flex flex-col justify-between shadow-[0_4px_20px_rgba(0,0,0,0.015)] relative overflow-hidden">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-extrabold text-slate-400 uppercase tracking-widest">Usuários Ativos</span>
+                    <svg class="h-6 w-6 text-blue-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                </div>
+                <div class="mt-1">
+                    <span id="kpi-techs" class="text-5xl font-black text-blue-600 tracking-tight">--</span>
+                    <p class="text-xs text-slate-400 mt-1 font-semibold">sessões ativas no sistema</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── PANELS SECTION ─── -->
+        <section class="flex-1 min-h-0 flex flex-row gap-5 overflow-hidden">        
+            <!-- LEFT PANEL (Chamados em Aberto) -->
+            <div class="w-[60%] bg-white border border-slate-100 rounded-3xl flex flex-col overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.015)]">
+                <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-transparent shrink-0">
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-900">Chamados em Aberto</h2>
+                        <p class="text-base text-slate-400 font-semibold mt-0.5">Ordenados por prioridade e tempo decorrido</p>
+                    </div>
+                    <span id="tickets-count-info" class="text-base text-slate-400 font-bold">
+                        Carregando...
+                    </span>
+                </div>
+
+                <!-- Table Container with Vertical Scrolling -->
+                <div class="flex-1 min-h-0 overflow-y-auto scrollable-content">
+                    <table class="w-full text-left text-base border-collapse">
+                        <thead class="sticky top-0 bg-white text-slate-400 uppercase font-black text-base tracking-wider border-b border-slate-100 z-10">
+                            <tr>
+                                <th class="pl-6 pr-3 py-4">Cliente / Título</th>
+                                <th class="px-3 py-4 w-40">Origem</th>
+                                <th class="px-3 py-4 w-36">Prioridade</th>
+                                <th class="pl-3 pr-6 py-4 w-40 text-right">Aberto Há</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tickets-tbody" class="divide-y divide-slate-100">
+                            <tr>
+                                <td colspan="4" class="text-center py-20 text-slate-400 text-lg">
+                                    Carregando dados da fila...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL (Agenda do Dia - Expandida) -->
+            <div class="w-[40%] bg-white border border-slate-100 rounded-3xl flex flex-col overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.015)]">
+                <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-transparent shrink-0">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-7 h-7 text-slate-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <h2 class="text-2xl font-black text-slate-900 truncate">Agenda do Dia</h2>
+                    </div>
+                    <span id="schedules-count-info" class="text-base text-slate-400 font-bold shrink-0">
+                        Carregando...
+                    </span>
+                </div>
+
+                <!-- Schedules Container -->
+                <div id="schedules-list" class="flex-1 min-h-0 overflow-y-auto scrollable-content p-4 space-y-3 bg-transparent">
+                    <div class="text-center py-20 text-slate-400 text-lg">
+                        Carregando compromissos...
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- JS LOGIC -->
+    <script>
+        // Auto-scaling script to ensure pixel-perfect 1920x1080 rendering on any TV viewport
+        function fitCanvasToScreen() {
+            const canvas = document.getElementById('tv-canvas');
+            if (!canvas) return;
+            
+            const w = window.innerWidth || document.documentElement.clientWidth || screen.width || 1920;
+            const h = window.innerHeight || document.documentElement.clientHeight || screen.height || 1080;
+            
+            const scaleX = w / 1920;
+            const scaleY = h / 1080;
+            
+            canvas.style.transform = `scale(${scaleX}, ${scaleY})`;
+        }
+        
+        window.addEventListener('resize', fitCanvasToScreen);
+        window.addEventListener('orientationchange', fitCanvasToScreen);
+        document.addEventListener('DOMContentLoaded', fitCanvasToScreen);
+        window.addEventListener('load', fitCanvasToScreen);
+        setTimeout(fitCanvasToScreen, 100);
+        setTimeout(fitCanvasToScreen, 500);
+        setTimeout(fitCanvasToScreen, 1000);
+
+        const token = "{{ $token }}";
+        const dataUrl = "{{ route('admin.dashboard-tv.data') }}?token=" + token;
+
+        // Clock Script (formatted to: "Sexta, 21 De Ago De 2026")
+        function updateClock() {
+            const clockTimeEl = document.getElementById('clock-time');
+            const clockSecsEl = document.getElementById('clock-seconds');
+            const dateEl = document.getElementById('current-date');
+            
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            clockTimeEl.textContent = `${hours}:${minutes}`;
+            clockSecsEl.textContent = seconds;
+
+            // Date formatting
+            const options = { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' };
+            let rawDate = now.toLocaleDateString('pt-BR', options);
+            
+            rawDate = rawDate.replace('-feira', '');
+            const formattedDate = rawDate.split(' ').map(word => {
+                if (word === 'de' || word === 'do' || word === 'da') return 'De';
+                if (!word) return '';
+                const cleanWord = word.replace('.', '');
+                return cleanWord.charAt(0).toUpperCase() + cleanWord.slice(1);
+            }).join(' ');
+            
+            dateEl.textContent = formattedDate;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Dashboard Data Fetcher
+        async function fetchDashboardData() {
+            try {
+                const response = await fetch(dataUrl);
+                if (!response.ok) {
+                    throw new Error("Erro na requisição da API");
+                }
+                const data = await response.json();
+
+                // Update KPIs
+                document.getElementById('kpi-open').textContent = data.kpis.open_tickets_count;
+                document.getElementById('kpi-closed').textContent = data.kpis.closed_tickets_count;
+                document.getElementById('kpi-sla').textContent = data.kpis.sla_overdue_count;
+                document.getElementById('kpi-techs').textContent = data.kpis.active_users_count ?? data.kpis.active_techs_count ?? 0;
+
+                // Update Header Info
+                const updatedTime = new Date();
+                const formattedHour = String(updatedTime.getHours()).padStart(2, '0') + ':' + String(updatedTime.getMinutes()).padStart(2, '0');
+                
+                // Update Tickets Table
+                const tbody = document.getElementById('tickets-tbody');
+                tbody.innerHTML = '';
+
+                if (!data.tickets || data.tickets.length === 0) {
+                    document.getElementById('tickets-count-info').textContent = `0 chamados · atualizado às ${formattedHour}`;
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="text-center py-20 px-4">
+                                <div class="flex flex-col items-center justify-center text-slate-400">
+                                    <div class="w-12 h-12 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center mb-3">
+                                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </div>
+                                    <p class="text-sm font-bold text-slate-700">Fila zerada!</p>
+                                    <p class="text-xs text-slate-400 mt-0.5">Nenhum chamado aberto no momento.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    document.getElementById('tickets-count-info').textContent = 
+                        `${data.tickets.length} chamados · atualizado às ${formattedHour}`;
+
+                    data.tickets.forEach(ticket => {
+                        const tr = document.createElement('tr');
+                        const isOverdue = ticket.sla_level === 'critical';
+                        
+                        // Highlight critical/SLA overdue rows with a soft red background
+                        const rowClass = isOverdue 
+                             ? 'bg-red-50/50 hover:bg-red-50/80 border-l-4 border-red-500 transition-colors' 
+                            : 'hover:bg-slate-50/50 transition-colors';
+
+                        // Priority Badge styling to match light theme pills
+                        let pClass = 'bg-slate-100 text-slate-700 border border-slate-200';
+                        if (ticket.priority_id === 3) pClass = 'bg-red-50 text-red-700 border border-red-100 font-extrabold';
+                        else if (ticket.priority_id === 2) pClass = 'bg-amber-50 text-amber-700 border border-amber-100 font-bold';
+                        else if (ticket.priority_id === 1) pClass = 'bg-emerald-50 text-emerald-700 border border-emerald-100';
+
+                        // Elapsed Time Styling
+                        let timeClass = 'text-slate-500 font-semibold';
+                        if (isOverdue) timeClass = 'text-red-600 font-black animate-pulse';
+                        else if (ticket.sla_level === 'warning') timeClass = 'text-amber-600 font-bold';
+
+                        tr.className = rowClass;
+                        tr.innerHTML = `
+                            <td class="pl-6 pr-3 py-4 font-semibold text-slate-900">
+                                <span class="line-clamp-1 text-xl font-black text-slate-900 leading-snug">${ticket.company_name}</span>
+                                <span class="block text-lg font-semibold text-slate-500 mt-1 truncate">${ticket.subject}</span>
+                            </td>
+                            <td class="px-3 py-4 text-slate-700 font-bold text-base whitespace-nowrap">
+                                ${ticket.origin ? ticket.origin.name : '—'}
+                            </td>
+                            <td class="px-3 py-4 whitespace-nowrap">
+                                <span class="px-3.5 py-1 text-sm font-black rounded-full uppercase tracking-wider ${pClass}">
+                                    ${ticket.priority ? ticket.priority.name : 'Normal'}
+                                </span>
+                            </td>
+                            <td class="pl-3 pr-6 py-4 text-right whitespace-nowrap">
+                                <div class="flex items-center justify-end gap-2 ${timeClass} text-base font-black">
+                                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span>${ticket.time_waiting}</span>
+                                </div>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+
+                // Update Schedules List
+                const sList = document.getElementById('schedules-list');
+                sList.innerHTML = '';
+
+                if (!data.schedules || data.schedules.length === 0) {
+                    document.getElementById('schedules-count-info').textContent = `0 compromissos · atualizado às ${formattedHour}`;
+                    sList.innerHTML = `
+                        <div class="flex flex-col items-center justify-center py-20 px-4 text-center">
+                            <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 mb-3">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <p class="text-lg font-bold text-slate-700">Nenhum compromisso hoje</p>
+                            <p class="text-base text-slate-400 mt-0.5">A agenda está livre.</p>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('schedules-count-info').textContent = `${data.schedules.length} compromissos · atualizado às ${formattedHour}`;
+                    
+                    data.schedules.forEach(record => {
+                        const div = document.createElement('div');
+                        div.className = 'bg-slate-50 border border-slate-100 p-4 rounded-2xl flex items-center gap-4 hover:bg-slate-100/60 transition-colors shadow-[0_2px_8px_rgba(0,0,0,0.01)]';
+                        
+                        // Format Start Time
+                        let formattedHourTime = '--:--';
+                        const timeValue = record.start_at || record.start;
+                        if (timeValue) {
+                            const startTime = new Date(timeValue);
+                            formattedHourTime = String(startTime.getHours()).padStart(2, '0') + ':' + String(startTime.getMinutes()).padStart(2, '0');
+                        }
+
+                        const clientName = record.customer ? (record.customer.trade_name || record.customer.name) : '—';
+                        const agentName = record.agent ? record.agent.name : '—';
+                        const titleText = record.formatted_title || record.title || (record.module ? record.module.name : (record.schedule_type ? record.schedule_type.label : 'Agendamento'));
+
+                        div.innerHTML = `
+                            <!-- Time -->
+                            <div class="text-blue-600 font-black text-2xl font-mono shrink-0">
+                                ${formattedHourTime}
+                            </div>
+                            <!-- Title & Detail -->
+                            <div class="flex-1 min-w-0">
+                                <h3 class="text-lg font-black text-slate-900 truncate">${titleText}</h3>
+                                <p class="text-base text-slate-500 font-medium truncate mt-0.5">
+                                    Cliente: <span class="text-slate-800 font-bold">${clientName}</span>
+                                </p>
+                                <p class="text-base text-slate-500 font-medium truncate mt-0.5">
+                                    Agente: <span class="text-slate-800 font-bold">${agentName}</span>
+                                </p>
+                            </div>
+                        `;
+                        sList.appendChild(div);
+                    });
+                }
+
+            } catch (err) {
+                console.error("Erro ao atualizar o Dashboard:", err);
+            }
+        }
+
+        // Initialize and poll
+        fetchDashboardData();
+        setInterval(fetchDashboardData, 5000); // 5 seconds (atualização quase em tempo real)
+    </script>
+</body>
+</html>

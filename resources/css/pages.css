@@ -1,0 +1,73 @@
+:root {
+    --bg-app: #525659;
+    --bg-sheet: #ffffff;
+    --shadow-standard: 0 2px 4px rgba(0, 0, 0, 0.4);
+    --text-muted: #595959; 
+    --container-max-width: 850px;
+}
+
+body {
+    padding: 4.375rem 7.5rem 0;
+    background-color: var(--bg-app);
+    font-size: 0.8125rem; 
+    line-height: 1.5;
+}
+
+#content {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    background-color: var(--bg-sheet);
+    padding: 2.5rem;
+    box-shadow: var(--shadow-standard);
+}
+
+.down-button {
+    position: fixed;
+    right: 3.75rem; 
+    bottom: 2.5rem; 
+    width: 3.75rem;
+    height: 3.75rem;
+    border-radius: 50%;
+    background-color: var(--bg-sheet);
+    color: var(--text-muted);
+    box-shadow: var(--shadow-standard);
+    z-index: 10;
+    cursor: pointer;
+    
+    /* centralização */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+}
+
+/* tipografia utilitária */
+.f-small { font-size: 0.625rem !important; }  /* 10px */
+.f-base  { font-size: 0.8125rem !important; } /* 13px */
+.f-large { font-size: 0.9375rem !important; } /* 15px */
+.bold    { font-weight: 700; }
+
+@media print {
+    body {
+        background-color: transparent;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .down-button {
+        display: none !important;
+    }
+    
+    #content {
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+        margin: 0;
+        position: static;
+    }
+
+    /* oculta UI administrativa sem afetar o fluxo do DOM principal */
+    body > *:not(#content) {
+        display: none !important;
+    }
+}

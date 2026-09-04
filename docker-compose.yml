@@ -1,0 +1,175 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# docker-compose.yml — BASE
+#
+# Define os serviços essenciais (mysql, redis, app, worker) com defaults
+# prod-friendly: sem bind-mount de código, sem portas desnecessárias expostas,
+# logging limitado e restart: unless-stopped.
+#
+# Para DEV use:  docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+# Para PROD use: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+#
+# Atalhos via Makefile (`make dev`, `make prod`) e no README.
+# ──────────────────────────────────────────────────────────────────────────────
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+networks:
+  plantao12_net:
+    driver: bridge
+
+volumes:
+  plantao12_dbdata:
+  plantao12_storage:
+
+services:
+  # ==========================
+  # MYSQL
+  # ==========================
+  plantao12_mysql:
+    image: mysql:8.0
+    container_name: plantao12_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:?DB_DATABASE obrigatório}
+      MYSQL_USER: ${DB_USERNAME:?DB_USERNAME obrigatório}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD obrigatório}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?DB_ROOT_PASSWORD obrigatório}
+      MYSQL_ROOT_HOST: "%"
+    volumes:
+      - plantao12_dbdata:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'mysqladmin ping -h localhost -uroot -p"$${MYSQL_ROOT_PASSWORD}" --silent',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 36
+      start_period: 6m
+    logging: *default-logging
+    networks:
+      - plantao12_net
+
+  # ==========================
+  # REDIS
+  # ==========================
+  plantao12_redis:
+    image: redis:alpine
+    container_name: plantao12_redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    logging: *default-logging
+    networks:
+      - plantao12_net
+
+  # ==========================
+  # APP: PHP + Apache (Laravel 12)
+  # ==========================
+  plantao12_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APP_UID: ${APP_UID:-1000}
+        APP_GID: ${APP_GID:-1000}
+    image: plantao12_app:latest
+    container_name: plantao12_app
+    restart: unless-stopped
+    user: "${APP_UID:-1000}:${APP_GID:-1000}"
+    env_file:
+      - .env
+    environment:
+      DB_HOST: plantao12_mysql
+      DB_PORT: "3306"
+      REDIS_HOST: plantao12_redis
+    depends_on:
+      plantao12_mysql:
+        condition: service_healthy
+      plantao12_redis:
+        condition: service_healthy
+    volumes:
+      - plantao12_storage:/var/www/html/storage/app/public
+    logging: *default-logging
+    networks:
+      - plantao12_net
+
+  # ==========================
+  # WORKER: Queue (Laravel)
+  # ==========================
+  plantao12_worker:
+    image: plantao12_app:latest
+    container_name: plantao12_worker
+    restart: unless-stopped
+    user: "${APP_UID:-1000}:${APP_GID:-1000}"
+    env_file:
+      - .env
+    environment:
+      DB_HOST: plantao12_mysql
+      DB_PORT: "3306"
+      REDIS_HOST: plantao12_redis
+    depends_on:
+      plantao12_app:
+        condition: service_started
+      plantao12_mysql:
+        condition: service_healthy
+      plantao12_redis:
+        condition: service_healthy
+    volumes:
+      - plantao12_storage:/var/www/html/storage/app/public
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pgrep -f 'artisan queue:work redis' >/dev/null || exit 1",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    command: php artisan queue:work redis --sleep=3 --tries=3 --timeout=90
+    logging: *default-logging
+    networks:
+      - plantao12_net
+
+  # ==========================
+  # SCHEDULER: Laravel Cron
+  # ==========================
+  plantao12_scheduler:
+    image: plantao12_app:latest
+    container_name: plantao12_scheduler
+    restart: unless-stopped
+    user: root
+    env_file:
+      - .env
+    environment:
+      DB_HOST: plantao12_mysql
+      DB_PORT: "3306"
+      REDIS_HOST: plantao12_redis
+    depends_on:
+      plantao12_mysql:
+        condition: service_healthy
+      plantao12_redis:
+        condition: service_healthy
+    volumes:
+      - ./docker/cron-entrypoint.sh:/usr/local/bin/cron-entrypoint.sh:ro
+      - plantao12_storage:/var/www/html/storage/app/public
+    entrypoint: ["/usr/local/bin/cron-entrypoint.sh"]
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep crond >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    logging: *default-logging
+    networks:
+      - plantao12_net
+

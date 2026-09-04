@@ -1,0 +1,14 @@
+.bg-custom-gradient {
+    background-color: #005bb5;
+    background-image: 
+        /* Curva de luz branca inferior */
+        radial-gradient(at 0% 100%, rgba(255, 255, 255, 0.4) 0px, transparent 50%),
+        /* Brilho azul claro central */
+        radial-gradient(at 50% 50%, rgba(0, 230, 255, 0.2) 0px, transparent 50%),
+        /* Sombra profunda no topo */
+        linear-gradient(180deg, #003a75 0%, transparent 100%),
+        /* Feixes de luz diagonais */
+        linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%, transparent);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 200px 200px;
+    background-attachment: fixed;
+}

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+>
+    <testsuites>
+        <testsuite name="All">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <file>app/Http/Controllers/Auth/AuthenticatedSessionController.php</file>
+            <file>app/Http/Controllers/Auth/ConfirmablePasswordController.php</file>
+            <file>app/Http/Controllers/Auth/PasswordController.php</file>
+            <file>app/Http/Controllers/Auth/PasswordResetLinkController.php</file>
+            <file>app/Http/Controllers/Auth/RegisteredUserController.php</file>
+            <file>app/Http/Controllers/Auth/VerifyEmailController.php</file>
+            <file>app/Http/Controllers/Auth/EmailVerificationPromptController.php</file>
+            <file>app/Http/Controllers/Auth/NewPasswordController.php</file>
+
+            <directory>app/Http/Controllers/Admin/Helpdesk</directory>
+
+            <file>app/Services/Access/AccessService.php</file>
+            <file>app/Services/Admin/Helpdesk/HelpdeskService.php</file>
+            <file>app/Services/Helpdesk/Ticketit/SlaService.php</file>
+        </include>
+    </source>
+
+    <php>
+        <env name="APP_ENV"                value="testing"  force="true"/>
+        <env name="APP_KEY"                value="base64:2fl+Ktvkfl+Ktvkfl+Ktvkfl+Ktvkfl+Ktvkfl+Kt="  force="true"/>
+        <env name="APP_MAINTENANCE_DRIVER" value="file"     force="true"/>
+        <env name="BCRYPT_ROUNDS"          value="4"        force="true"/>
+        <env name="BROADCAST_CONNECTION"   value="null"    force="true"/>
+        <env name="CACHE_STORE"            value="array"    force="true"/>
+        <env name="DB_CONNECTION"          value="sqlite"   force="true"/>
+        <env name="DB_DATABASE"            value=":memory:" force="true"/>
+        <env name="DB_FOREIGN_KEYS"        value="false"    force="true"/>
+        <env name="MAIL_MAILER"            value="array"    force="true"/>
+        <env name="QUEUE_CONNECTION"       value="sync"     force="true"/>
+        <env name="SESSION_DRIVER"         value="array"    force="true"/>
+        <env name="SCOUT_DRIVER"           value="null"     force="true"/>
+        <env name="PULSE_ENABLED"          value="false"    force="true"/>
+        <env name="TELESCOPE_ENABLED"      value="false"    force="true"/>
+        <env name="NIGHTWATCH_ENABLED"     value="false"    force="true"/>
+    </php>
+</phpunit>

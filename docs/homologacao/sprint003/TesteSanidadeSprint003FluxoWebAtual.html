@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Sanidade Sprint 003 - Fluxo Web Atual</title>
+    <style>
+        :root {
+            --text: #111827;
+            --muted: #4b5563;
+            --line: #d1d5db;
+            --soft: #f3f4f6;
+            --panel: #ffffff;
+            --brand: #c2410c;
+            --brand-soft: #fff7ed;
+            --warn: #92400e;
+            --warn-soft: #fef3c7;
+            --danger: #991b1b;
+            --danger-soft: #fef2f2;
+            --ok: #166534;
+            --ok-soft: #f0fdf4;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "DejaVu Sans", "Noto Sans", Arial, sans-serif;
+            color: var(--text);
+            background: #f5f5f5;
+            line-height: 1.55;
+        }
+
+        main {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 32px 24px 64px;
+        }
+
+        .page,
+        .scenario {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(17, 24, 39, 0.06);
+        }
+
+        .page + .scenario,
+        .scenario + .scenario {
+            margin-top: 24px;
+        }
+
+        h1, h2, h3, h4 {
+            margin-top: 0;
+            color: #0f172a;
+        }
+
+        h1 {
+            font-size: 28px;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin: 0 0 12px;
+        }
+
+        ul, ol {
+            margin: 0 0 14px 18px;
+            padding: 0;
+        }
+
+        li + li {
+            margin-top: 6px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            margin-bottom: 10px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: var(--brand-soft);
+            color: var(--brand);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .lede {
+            font-size: 16px;
+            color: var(--muted);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin: 18px 0;
+        }
+
+        .card {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 16px;
+            background: #fff;
+        }
+
+        .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 12px 0 18px;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: var(--soft);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .note,
+        .warning,
+        .success {
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin: 16px 0;
+            border: 1px solid var(--line);
+        }
+
+        .note {
+            background: #eff6ff;
+            border-color: #bfdbfe;
+        }
+
+        .warning {
+            background: var(--warn-soft);
+            border-color: #fcd34d;
+            color: var(--warn);
+        }
+
+        .success {
+            background: var(--ok-soft);
+            border-color: #86efac;
+            color: var(--ok);
+        }
+
+        .danger {
+            background: var(--danger-soft);
+            border: 1px solid #fecaca;
+            color: var(--danger);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin: 16px 0;
+        }
+
+        .checklist {
+            border: 1px dashed #9ca3af;
+            border-radius: 14px;
+            padding: 16px;
+            margin-top: 18px;
+        }
+
+        .result-line {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--line);
+            font-weight: 700;
+        }
+
+        .toc {
+            columns: 2;
+            column-gap: 32px;
+            margin: 18px 0 6px;
+        }
+
+        .toc li {
+            break-inside: avoid;
+        }
+
+        .small {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+
+        @media print {
+            body {
+                background: #fff;
+            }
+
+            main {
+                max-width: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .page,
+            .scenario {
+                box-shadow: none;
+                border-radius: 0;
+                border: none;
+                padding: 18mm 14mm;
+                margin: 0;
+            }
+
+            .page + .scenario,
+            .scenario + .scenario {
+                margin-top: 0;
+            }
+
+            .page-break {
+                page-break-after: always;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .toc {
+                columns: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+<main>
+    <section class="page page-break">
+        <span class="eyebrow">Roteiro Manual</span>
+        <h1>Teste de Sanidade Sprint 003 - Fluxo Web Atual</h1>
+        <p class="lede">
+            Documento manual para homologação do fluxo web atual do sistema. Este roteiro preserva os mesmos 7 cenários do PDF antigo,
+            mas foi reescrito com base na interface e no comportamento reais da aplicação.
+        </p>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3>Objetivo</h3>
+                <p>Permitir que o usuário execute a sanidade de ponta a ponta sem depender de API, banco ou conhecimento técnico interno.</p>
+                <p>O foco é confirmar se o fluxo pode ser concluído pela interface, com clareza, feedback e acessibilidade mínimas.</p>
+            </div>
+            <div class="card">
+                <h3>Perfis necessários</h3>
+                <ul>
+                    <li>1 usuário agente/staff ativo</li>
+                    <li>1 usuário administrador ativo</li>
+                    <li>1 cliente com módulos contratados cadastrados</li>
+                    <li>1 navegador atualizado com captura de tela disponível</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Dados para preencher antes da execução</h3>
+            <ul>
+                <li>Usuário agente/staff: __________________________________________</li>
+                <li>Usuário administrador: _________________________________________</li>
+                <li>Cliente com módulos contratados: ________________________________</li>
+                <li>Arquivo de teste para anexo em tarefa: __________________________</li>
+                <li>Data/hora da execução: _________________________________________</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <h3>Como executar corretamente</h3>
+            <ul>
+                <li>Use apenas a interface web. Não use URL escondida, API, console do navegador ou banco.</li>
+                <li>Se uma ação não estiver visível na tela, trate isso como falha de fluxo, não como erro do testador.</li>
+                <li>Em cada cenário, tente pelo menos uma navegação usando teclado: <strong>Tab</strong>, <strong>Shift+Tab</strong>, <strong>Enter</strong> e <strong>Espaço</strong>.</li>
+                <li>Sempre registre evidência quando houver erro, mensagem ambígua, botão ausente, redirecionamento inesperado ou inconsistência de nome.</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <h3>Critério de severidade</h3>
+            <ul>
+                <li><strong>Bloqueador:</strong> o usuário não consegue continuar o fluxo.</li>
+                <li><strong>Alto:</strong> o fluxo termina, mas com risco real de operação incorreta ou retrabalho.</li>
+                <li><strong>Médio:</strong> confusão de nomenclatura, feedback insuficiente, baixa clareza ou problema de acessibilidade contornável.</li>
+                <li><strong>Baixo:</strong> detalhe visual, texto pouco claro ou melhoria recomendada sem impacto direto na execução.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>Índice dos 7 cenários</h3>
+            <ol class="toc">
+                <li>Login do usuário staff</li>
+                <li>Abertura de ticket e validação de status/módulos</li>
+                <li>Listagem de chamados e filtro por agente</li>
+                <li>Agendamento e registro de RAT</li>
+                <li>Criação de tarefa com anexo</li>
+                <li>Mudança de status de tarefa e notificação</li>
+                <li>Fluxo de implantação</li>
+            </ol>
+        </div>
+
+        <p class="small">
+            Observação importante: hoje existe uma inconsistência de nomenclatura entre algumas telas, como "Novo Ticket" no menu lateral
+            e "Novo Chamado" em CTA interno. Se ambos levarem ao mesmo formulário, registre como inconsistência de nomenclatura, mas não bloqueie a execução.
+        </p>
+    </section>
+
+    <section class="scenario page-break">
+        <h2>1. Login do usuário staff</h2>
+        <div class="meta">
+            <span class="pill">Perfil: Agente/Staff</span>
+            <span class="pill">Prioridade: Alta</span>
+            <span class="pill">Entrada: /admin/login</span>
+        </div>
+
+        <h3>Objetivo</h3>
+        <p>Confirmar que um usuário staff ativo consegue entrar pela rota canônica e acessar o painel sem erro de sessão.</p>
+
+        <h3>Passos</h3>
+        <ol>
+            <li>Acesse a página de login administrativo.</li>
+            <li>Valide se a tela mostra o título <strong>"Acesso Restrito"</strong>, os campos <strong>"Usuário"</strong> e <strong>"Senha"</strong> e o botão <strong>"Acessar Conta"</strong>.</li>
+            <li>Preencha as credenciais do usuário staff ativo.</li>
+            <li>Envie o formulário.</li>
+            <li>Se possível, faça logout e repita com senha inválida para validar a mensagem de erro.</li>
+        </ol>
+
+        <h3>Resultado esperado</h3>
+        <ul>
+            <li>O login válido redireciona para o painel do agente/staff.</li>
+            <li>O login inválido exibe feedback claro sem quebrar a tela.</li>
+            <li>Não há loop de redirecionamento, tela em branco ou mensagem técnica.</li>
+        </ul>
+
+        <h3>Usabilidade e acessibilidade</h3>
+        <ul>
+            <li>A ordem do teclado deve ser lógica: usuário, senha, manter conectado, botão.</li>
+            <li>Os campos devem ter rótulo visível e clicável.</li>
+            <li>Mensagens de erro devem ser legíveis, próximas do formulário e em linguagem humana.</li>
+            <li>O foco do teclado deve ficar visível durante toda a navegação.</li>
+        </ul>
+
+        <div class="checklist">
+            <h3>Evidência sugerida</h3>
+            <ul>
+                <li>Print da tela antes do login.</li>
+                <li>Print da área logada após o login.</li>
+                <li>Print da mensagem de erro no teste com senha inválida, se executado.</li>
+            </ul>
+            <p class="result-line">Resultado do cenário: [ ] Aprovado [ ] Aprovado com ressalvas [ ] Reprovado [ ] Bloqueado</p>
+        </div>
+    </section>
+
+    <section class="scenario page-break">
+        <h2>2. Abertura de ticket e validação de status/módulos</h2>
+        <div class="meta">
+            <span class="pill">Perfil: Agente/Staff</span>
+            <span class="pill">Prioridade: Alta</span>
+            <span class="pill">Menu: Atendimento &gt; Novo Ticket</span>
+        </div>
+
+        <h3>Objetivo</h3>
+        <p>Garantir que o formulário de ticket atual permite abrir chamados, exibe módulos contratados por cliente e direciona corretamente o fluxo de visita técnica.</p>
+
+        <h3>Passos</h3>
+        <ol>
+            <li>Acesse <strong>Atendimento &gt; Novo Ticket</strong>.</li>
+            <li>Confirme a presença dos campos principais: <strong>Técnico/Suporte</strong>, <strong>Empresa/Cliente</strong>, categoria, subcategoria, <strong>Módulo Contratado</strong> e <strong>Observação Interna</strong>.</li>
+            <li>Selecione um cliente que tenha módulos contratados e verifique se o campo <strong>Módulo Contratado</strong> exibe opções coerentes com esse cliente.</li>
+            <li>Abra um ticket <strong>sem técnico atribuído</strong> e conclua o salvamento.</li>
+            <li>Abra um novo ticket <strong>com técnico atribuído</strong> e status operacional equivalente a <strong>Em andamento</strong>.</li>
+            <li>Abra um terceiro ticket com status <strong>Visita Técnica</strong>.</li>
+        </ol>
+
+        <h3>Resultado esperado</h3>
+        <ul>
+            <li>O formulário carrega sem erro técnico e com os campos visíveis.</li>
+            <li>Os módulos mudam conforme o cliente selecionado.</li>
+            <li>Quando não há técnico, o chamado deve seguir como pendente.</li>
+            <li>Quando o status é <strong>Visita Técnica</strong>, o sistema deve redirecionar para a criação de agendamento.</li>
+            <li>Status comuns, como <strong>Em andamento</strong>, não devem redirecionar para agendamento.</li>
+        </ul>
+
+        <div class="note">
+            <strong>Como julgar a etapa:</strong> se "Novo Ticket" e "Novo Chamado" aparecerem em pontos diferentes da navegação, mas abrirem o mesmo formulário, classifique como inconsistência de nomenclatura (médio), não como bloqueador.
+        </div>
+
+        <h3>Usabilidade e acessibilidade</h3>
+        <ul>
+            <li>O usuário deve conseguir entender claramente qual cliente está selecionado.</li>
+            <li>O estado "cliente bloqueado financeiramente" deve ser visível por texto, não apenas por cor.</li>
+            <li>Campos obrigatórios devem ser fáceis de identificar.</li>
+            <li>O redirecionamento para agendamento, quando houver visita técnica, deve deixar claro o motivo da mudança de tela.</li>
+        </ul>
+
+        <div class="checklist">
+            <h3>Evidência sugerida</h3>
+            <ul>
+                <li>Print do formulário com módulos contratados carregados.</li>
+                <li>Print do ticket salvo sem técnico.</li>
+                <li>Print do redirecionamento para agendamento no caso de <strong>Visita Técnica</strong>.</li>
+            </ul>
+            <p class="result-line">Resultado do cenário: [ ] Aprovado [ ] Aprovado com ressalvas [ ] Reprovado [ ] Bloqueado</p>
+        </div>
+    </section>
+
+    <section class="scenario page-break">
+        <h2>3. Listagem de chamados e filtro por agente</h2>
+        <div class="meta">
+            <span class="pill">Perfis: Agente e Admin</span>
+            <span class="pill">Prioridade: Alta</span>
+            <span class="pill">Menu: Atendimento &gt; Meus Chamados / Todos os Chamados</span>
+        </div>
+
+        <h3>Objetivo</h3>
+        <p>Verificar se a listagem se comporta corretamente para cada perfil e se o filtro por agente funciona apenas quando o perfil permite.</p>
+
+        <h3>Passos</h3>
+        <ol>
+            <li>Logado como agente, acesse <strong>Atendimento &gt; Meus Chamados</strong>.</li>
+            <li>Confirme se a tela mostra o título <strong>"Meus Chamados"</strong> e a indicação de que o responsável está fixo no usuário logado.</li>
+            <li>Faça logout e entre com o usuário administrador.</li>
+            <li>Acesse <strong>Atendimento &gt; Todos os Chamados</strong>.</li>
+            <li>Use o filtro <strong>Agente</strong> para selecionar um responsável específico.</li>
+            <li>Aplique o filtro e valide se a lista retornada faz sentido para o agente escolhido.</li>
+        </ol>
+
+        <h3>Resultado esperado</h3>
+        <ul>
+            <li>O agente vê a visão <strong>Meus Chamados</strong> como padrão.</li>
+            <li>O administrador consegue acessar <strong>Todos os Chamados</strong>.</li>
+            <li>O filtro por agente deve existir para admin e não deve induzir o agente comum a procurar algo que ele não pode usar.</li>
+            <li>A lista deve atualizar sem erro e sem misturar resultados de outros agentes quando o filtro estiver aplicado.</li>
+        </ul>
+
+        <h3>Usabilidade e acessibilidade</h3>
+        <ul>
+            <li>Os filtros devem ter nomes claros: palavra-chave, status, categoria, empresa, agente.</li>
+            <li>O botão de aplicar filtro deve ser fácil de identificar.</li>
+            <li>O usuário deve conseguir limpar o filtro sem precisar editar a URL manualmente.</li>
+            <li>O título da página deve deixar evidente se a visão é pessoal ou administrativa.</li>
+        </ul>
+
+        <div class="checklist">
+            <h3>Evidência sugerida</h3>
+            <ul>
+                <li>Print de <strong>Meus Chamados</strong> no perfil agente.</li>
+                <li>Print de <strong>Todos os Chamados</strong> com filtro por agente no perfil admin.</li>
+            </ul>
+            <p class="result-line">Resultado do cenário: [ ] Aprovado [ ] Aprovado com ressalvas [ ] Reprovado [ ] Bloqueado</p>
+        </div>
+    </section>
+
+    <section class="scenario page-break">
+        <h2>4. Agendamento e registro de RAT</h2>
+        <div class="meta">
+            <span class="pill">Perfis: Agente e Admin</span>
+            <span class="pill">Prioridade: Alta</span>
+            <span class="pill">Entrada: redirecionamento de Visita Técnica ou Novo Agendamento</span>
+        </div>
+
+        <h3>Objetivo</h3>
+        <p>Confirmar o fluxo atual de agendamento, a confirmação administrativa e o registro de RAT pela interface.</p>
+
+        <h3>Passos</h3>
+        <ol>
+            <li>Partindo do cenário 2, use um ticket com status <strong>Visita Técnica</strong> para chegar na tela de <strong>Novo Agendamento</strong>.</li>
+            <li>Confirme se o contexto do ticket aparece na tela: número do ticket, cliente, contato e título sugerido.</li>
+            <li>Salve o agendamento.</li>
+            <li>Entre com o perfil administrador e localize o agendamento na visão de agenda onde ele aparece com o selo <strong>"Aguardando admin"</strong>.</li>
+            <li>Clique em <strong>Confirmar</strong>.</li>
+            <li>Volte ao perfil agente e abra o detalhe do agendamento.</li>
+            <li>Clique em <strong>Novo RAT</strong>, preencha data, horário, módulo, executor e contato, e salve.</li>
+        </ol>
+
+        <h3>Resultado esperado</h3>
+        <ul>
+            <li>O agendamento de origem em ticket mostra o contexto correto.</li>
+            <li>O admin consegue identificar visualmente que o agendamento depende de confirmação.</li>
+            <li>Depois do RAT, o sistema deve redirecionar para o detalhe do agendamento com mensagem de sucesso.</li>
+            <li>O RAT criado deve ficar visível na área de registros do agendamento.</li>
+        </ul>
+
+        <h3>Usabilidade e acessibilidade</h3>
+        <ul>
+            <li>A tela deve explicar por texto que o agendamento está aguardando confirmação do administrador.</li>
+            <li>O botão <strong>Novo RAT</strong> deve ser fácil de localizar no detalhe do agendamento.</li>
+            <li>O formulário de RAT deve usar labels claros e separação visual entre contexto e campos editáveis.</li>
+            <li>O retorno após salvar deve mostrar feedback explícito, não apenas mudar a URL.</li>
+        </ul>
+
+        <div class="checklist">
+            <h3>Evidência sugerida</h3>
+            <ul>
+                <li>Print do contexto do ticket na tela de agendamento.</li>
+                <li>Print do selo <strong>Aguardando admin</strong> e do botão <strong>Confirmar</strong>.</li>
+                <li>Print do detalhe do agendamento após salvar o RAT, com a mensagem de sucesso.</li>
+            </ul>
+            <p class="result-line">Resultado do cenário: [ ] Aprovado [ ] Aprovado com ressalvas [ ] Reprovado [ ] Bloqueado</p>
+        </div>
+    </section>
+
+    <section class="scenario page-break">
+        <h2>5. Criação de tarefa com anexo</h2>
+        <div class="meta">
+            <span class="pill">Perfil: Agente ou Admin</span>
+            <span class="pill">Prioridade: Alta</span>
+            <span class="pill">Menu: Tarefas &gt; Minhas Tarefas</span>
+        </div>
+
+        <h3>Objetivo</h3>
+        <p>Validar a inbox compartilhada de tarefas, a abertura do drawer e o envio de anexo pelo fluxo web atual.</p>
+
+        <h3>Passos</h3>
+        <ol>
+            <li>Acesse <strong>Tarefas &gt; Minhas Tarefas</strong>.</li>
+            <li>Confirme se a tela mostra <strong>Minhas Tarefas</strong>, o botão <strong>Nova Tarefa</strong> e o sino de <strong>Notificações</strong>.</li>
+            <li>Abra o drawer de criação.</li>
+            <li>Preencha título, descrição e responsável.</li>
+            <li>Se necessário, selecione cliente, projeto, módulo e submódulo.</li>
+            <li>Anexe um arquivo válido de teste com tamanho inferior a 50 MB.</li>
+            <li>Salve a tarefa.</li>
+            <li>Opcional: repita com um arquivo acima de 50 MB para validar a mensagem de erro.</li>
+        </ol>
+
+        <h3>Resultado esperado</h3>
+        <ul>
+            <li>O drawer abre e fecha sem quebrar a navegação.</li>
+            <li>O nome do arquivo selecionado aparece antes do envio.</li>
+            <li>Após salvar, a tarefa é criada sem erro técnico.</li>
+            <li>No teste opcional, um arquivo acima de 50 MB deve exibir erro de validação compreensível.</li>
+        </ul>
+
+        <h3>Usabilidade e acessibilidade</h3>
+        <ul>
+            <li>O drawer deve manter foco navegável por teclado.</li>
+            <li>O campo de anexo deve informar tipos aceitos e limite de tamanho em texto.</li>
+            <li>Mensagens de erro de validação devem ficar visíveis sem exigir rolagem excessiva.</li>
+            <li>O formulário não deve depender apenas de placeholder para explicar o campo.</li>
+        </ul>
+
+        <div class="checklist">
+            <h3>Evidência sugerida</h3>
+            <ul>
+                <li>Print da inbox com o botão <strong>Nova Tarefa</strong>.</li>
+                <li>Print do drawer com o arquivo selecionado.</li>
+                <li>Print da mensagem de sucesso ou do erro de validação acima de 50 MB.</li>
+            </ul>
+            <p class="result-line">Resultado do cenário: [ ] Aprovado [ ] Aprovado com ressalvas [ ] Reprovado [ ] Bloqueado</p>
+        </div>
+    </section>
+
+    <section class="scenario page-break">
+        <h2>6. Mudança de status de tarefa e notificação</h2>
+        <div class="meta">
+            <span class="pill">Perfil: Agente ou Admin</span>
+            <span class="pill">Prioridade: Bloqueador se ausente</span>
+            <span class="pill">Menu: Tarefas &gt; Minhas Tarefas</span>
+        </div>
+
+        <h3>Objetivo</h3>
+        <p>Verificar se o usuário consegue alterar o status de uma tarefa diretamente pela interface web e se há retorno visível dessa ação.</p>
+
+        <h3>Passos</h3>
+        <ol>
+            <li>Acesse uma tarefa já criada na inbox.</li>
+            <li>Procure uma ação visível para alterar status, como botão, dropdown, modal, detalhe expandido ou tela própria de edição.</li>
+            <li>Se a ação existir, altere o status e valide o retorno visual.</li>
+            <li>Se a ação não existir, registre o bloqueio e não tente contornar por rota manual, API ou banco.</li>
+        </ol>
+
+        <div class="danger">
+            <strong>Resultado esperado no estado atual:</strong> se não houver controle visível para mudança de status na UI web, registrar <strong>Bloqueador</strong>.
+            A ausência dessa ação deve ser tratada como falha do fluxo, não como falha de execução do teste.
+        </div>
+
+        <h3>Resultado esperado</h3>
+        <ul>
+            <li>O usuário deveria conseguir localizar uma ação clara para mudar o status.</li>
+            <li>Após a mudança, a interface deveria mostrar feedback de atualização e refletir o novo estado.</li>
+            <li>Se essa ação não existir, o cenário deve ser encerrado como bloqueado.</li>
+        </ul>
+
+        <h3>Usabilidade e acessibilidade</h3>
+        <ul>
+            <li>A ação de status precisa ser visível sem depender de conhecimento interno do sistema.</li>
+            <li>O status atual deve ser legível em texto, não apenas por cor.</li>
+            <li>Se houver notificação, ela deve ser compreensível e não desaparecer rápido demais para leitura.</li>
+        </ul>
+
+        <div class="checklist">
+            <h3>Evidência sugerida</h3>
+            <ul>
+                <li>Print da inbox mostrando a tarefa.</li>
+                <li>Print da ausência da ação de mudança de status, se aplicável.</li>
+                <li>Se a ação existir, print do antes e depois da alteração.</li>
+            </ul>
+            <p class="result-line">Resultado do cenário: [ ] Aprovado [ ] Aprovado com ressalvas [ ] Reprovado [ ] Bloqueado</p>
+        </div>
+    </section>
+
+    <section class="scenario">
+        <h2>7. Fluxo de implantação</h2>
+        <div class="meta">
+            <span class="pill">Perfis: Agente e Admin</span>
+            <span class="pill">Prioridade: Alta</span>
+            <span class="pill">Menu: Implantação &gt; Visão Geral / Agendamentos</span>
+        </div>
+
+        <h3>Objetivo</h3>
+        <p>Confirmar que o fluxo de implantação atual permite navegar pela área, visualizar agendamentos, registrar RAT e identificar claramente a etapa de finalização.</p>
+
+        <h3>Passos</h3>
+        <ol>
+            <li>Logado como agente, acesse <strong>Implantação &gt; Visão Geral</strong>.</li>
+            <li>Confirme a presença dos atalhos <strong>Ver Agendamentos</strong> e <strong>Novo Agendamento</strong>.</li>
+            <li>Acesse <strong>Implantação &gt; Agendamentos</strong> e confirme se a lista mostra os agendamentos ativos.</li>
+            <li>Com um agendamento pendente de confirmação, entre com o perfil admin e localize a etapa de confirmação na agenda de agendamentos.</li>
+            <li>Confirme o agendamento.</li>
+            <li>Volte ao perfil agente, abra o detalhe do agendamento e registre um RAT.</li>
+            <li>Tente localizar uma ação visível para <strong>finalizar</strong> o agendamento pela interface.</li>
+        </ol>
+
+        <div class="danger">
+            <strong>Resultado esperado no estado atual:</strong> se não houver botão ou ação visível de finalização no fluxo web, registrar <strong>Bloqueador</strong>.
+            O usuário não deve ser instruído a adivinhar rotas ou usar mecanismos internos.
+        </div>
+
+        <h3>Resultado esperado</h3>
+        <ul>
+            <li>A área de implantação deve ser compreensível para o agente: visão geral, listagem e detalhe.</li>
+            <li>O admin deve conseguir identificar e confirmar o agendamento pendente.</li>
+            <li>O detalhe do agendamento deve exibir a seção de RATs e permitir novo registro.</li>
+            <li>A finalização, se não estiver disponível na UI, deve ser registrada como falha de fluxo.</li>
+        </ul>
+
+        <h3>Usabilidade e acessibilidade</h3>
+        <ul>
+            <li>Os atalhos da área de implantação devem ter nomes claros e consistentes.</li>
+            <li>O selo <strong>Aguardando admin</strong> deve ser textual e fácil de localizar.</li>
+            <li>O detalhe do agendamento deve separar visualmente dados do agendamento e registros de RAT.</li>
+            <li>Se a tela não oferece ação de finalizar, isso precisa ser tratado como lacuna real de usabilidade do fluxo.</li>
+        </ul>
+
+        <div class="checklist">
+            <h3>Evidência sugerida</h3>
+            <ul>
+                <li>Print da <strong>Visão Geral</strong> da implantação.</li>
+                <li>Print da lista de agendamentos.</li>
+                <li>Print do detalhe do agendamento com a seção de RAT.</li>
+                <li>Print mostrando a ausência de ação de finalizar, se aplicável.</li>
+            </ul>
+            <p class="result-line">Resultado do cenário: [ ] Aprovado [ ] Aprovado com ressalvas [ ] Reprovado [ ] Bloqueado</p>
+        </div>
+    </section>
+</main>
+</body>
+</html>

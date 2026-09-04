@@ -1,0 +1,125 @@
+/* 1. Variáveis Globais (Design Tokens) */
+:root {
+    --primary-color: #e07c00;
+    --bg-main: #f3f4f6; /* Um cinza mais suave que #ddd */
+    --bg-nav: #4e4e4e;
+    --bg-nav-hover: #555;
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --text-nav: #aaa;
+    --nav-width: 300px;
+    --transition-standard: all 0.3s ease;
+    --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* 2. Reset & Base */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-system);
+    font-size: 0.8125rem; /* 13px */
+    line-height: 1.5;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    overflow-y: scroll;
+}
+
+h1 {
+    font-weight: 300;
+    font-size: 2rem;
+}
+
+/* 3. Utilitários (Component-driven) */
+.u-max-w-800 { max-width: 50rem; }
+.u-max-h-800 { max-height: 50rem; }
+.u-pointer { cursor: pointer; }
+
+.is-disabled {
+    color: var(--text-muted) !important;
+    pointer-events: none;
+    opacity: 0.4;
+    cursor: not-allowed !important;
+}
+
+/* 4. Layout (Sidebar & Content) */
+.layout-wrapper {
+    display: flex;
+}
+
+.navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: var(--nav-width);
+    background-color: var(--bg-nav);
+    z-index: 100;
+}
+
+.navigation ul {
+    list-style: none;
+    margin-top: 2.5rem;
+}
+
+.nav-item {
+    color: var(--text-nav);
+    font-size: 1.125rem;
+    transition: var(--transition-standard);
+}
+
+.nav-item:hover {
+    background-color: var(--bg-nav-hover);
+}
+
+.nav-item.is-active {
+    background-color: var(--bg-nav-hover);
+    color: var(--primary-color);
+    box-shadow: inset -4px 0 0 var(--primary-color); /* Melhor que border-right para layouts fixos */
+}
+
+.nav-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    padding: 1rem;
+    text-align: center;
+}
+
+.main-content {
+    flex: 1;
+    padding: 2rem;
+    margin-left: var(--nav-width); /* Mantém o conteúdo fora da sidebar fixa */
+}
+
+/* 5. Componentes (Profile & Avatar) */
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 6rem;
+    text-align: center;
+}
+
+.profile__name {
+    color: var(--text-nav);
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
+.profile-avatar {
+    width: 7.2rem;
+    height: 7.2rem;
+    margin-top: 3rem;
+    border-radius: 50%;
+    background: var(--bg-main) no-repeat center/cover;
+    border: 3px solid #6f6f6f;
+}
+
+/* 6. Botões */
+.btn-submit {
+    transition: background-color 0.3s ease; /* Reduzi de 1000ms para 300ms (UX melhor) */
+}

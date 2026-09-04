@@ -1,0 +1,100 @@
+@extends('admin.layouts.master')
+
+@section('title', isset($status) ? "Editar Status: {$status->name}" : 'Novo Status')
+
+@section('content')
+<div class="max-w-lg space-y-5">
+
+    {{-- Breadcrumb --}}
+    <nav class="flex items-center gap-1.5 text-xs text-gray-400 font-medium">
+        <a href="{{ route('admin.helpdesk.dashboard') }}" class="hover:text-indigo-600 transition-colors">Helpdesk</a>
+        <svg class="w-3.5 h-3.5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <a href="{{ route('admin.helpdesk.status.index') }}" class="hover:text-indigo-600 transition-colors">Status</a>
+        <svg class="w-3.5 h-3.5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-gray-600 font-semibold">{{ isset($status) ? 'Editar' : 'Novo' }}</span>
+    </nav>
+
+    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+        <div class="px-5 py-4 border-b border-gray-100">
+            <h1 class="text-base font-black text-gray-900">
+                {{ isset($status) ? "Editar Status: {$status->name}" : 'Novo Status' }}
+            </h1>
+        </div>
+
+        @if($errors->any())
+            <div class="mx-5 mt-5 p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
+                <ul class="list-disc pl-4 space-y-1">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ isset($status) ? route('admin.helpdesk.status.update', $status->id) : route('admin.helpdesk.status.store') }}"
+              method="POST"
+              class="p-5 sm:p-6 space-y-5"
+              x-data="{ color: '{{ old('color', $status->color ?? '#6366f1') }}' }">
+            @csrf
+            @isset($status)
+                @method('PUT')
+            @endisset
+
+            {{-- Nome --}}
+            <div>
+                <label for="name" class="block text-xs font-bold text-gray-600 mb-2">
+                    Nome <span class="text-red-500">*</span>
+                </label>
+                <input type="text"
+                       name="name"
+                       id="name"
+                       value="{{ old('name', $status->name ?? '') }}"
+                       required
+                       placeholder="Ex: Aberto, Em Andamento, Resolvido..."
+                       class="w-full px-4 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl outline-none
+                              focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
+            </div>
+
+            {{-- Cor --}}
+            <div>
+                <label for="color" class="block text-xs font-bold text-gray-600 mb-2">
+                    Cor <span class="text-red-500">*</span>
+                </label>
+                <div class="flex items-center gap-3">
+                    <input type="color"
+                           x-model="color"
+                           name="color"
+                           id="color"
+                           class="w-10 h-10 rounded-lg border border-gray-200 cursor-pointer p-0.5">
+                    <input type="text"
+                           x-model="color"
+                           placeholder="#6366f1"
+                           class="flex-1 px-4 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl outline-none
+                                  focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all font-mono">
+                    {{-- Preview --}}
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold transition-all"
+                          :style="`background-color: ${color}20; color: ${color}`"
+                          x-text="color || 'Preview'"></span>
+                </div>
+                <p class="text-[10px] text-gray-400 mt-1.5">Use o seletor ou insira um código hexadecimal (ex: #6366f1).</p>
+            </div>
+
+            {{-- Ações --}}
+            <div class="flex flex-wrap items-center gap-3 pt-2 border-t border-gray-100">
+                <button type="submit"
+                        class="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700
+                               text-white rounded-xl font-bold text-sm shadow-md transition-all active:scale-95">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    {{ isset($status) ? 'Atualizar Status' : 'Criar Status' }}
+                </button>
+                <a href="{{ route('admin.helpdesk.status.index') }}"
+                   class="text-sm font-semibold text-gray-500 hover:text-gray-700 transition-colors">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection

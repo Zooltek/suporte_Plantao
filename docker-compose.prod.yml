@@ -1,0 +1,168 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# docker-compose.prod.yml — PROD OVERLAY COMPLETO COM SERVIÇOS EXTRAS
+# ──────────────────────────────────────────────────────────────────────────────
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "5"
+
+services:
+  # ==========================
+  # APP (Laravel 12)
+  # ==========================
+  plantao12_app:
+    ports:
+      # Aberto em 0.0.0.0 para acesso via rede (ex: http://192.168.1.160:8095)
+      - "${APP_BIND_ADDRESS:-0.0.0.0}:8095:8080"
+    environment:
+      APP_URL: ${APP_URL:-http://localhost:8095}
+      APP_PUBLIC_URL: ${APP_PUBLIC_URL:-}
+      WHATSAPP_WEBHOOK_URL: http://plantao12_app:8080/api/webhook/whatsapp
+    volumes:
+      - plantao12_storage:/var/www/html/storage/app/public
+    logging: *default-logging
+
+  # ==========================
+  # WORKER (Filas do Laravel)
+  # ==========================
+  plantao12_worker:
+    environment:
+      APP_PUBLIC_URL: ${APP_PUBLIC_URL:-}
+      WHATSAPP_WEBHOOK_URL: http://plantao12_app:8080/api/webhook/whatsapp
+    volumes:
+      - plantao12_storage:/var/www/html/storage/app/public
+    logging: *default-logging
+
+  # ==========================
+  # SCHEDULER (Cron Laravel de Produção)
+  # ==========================
+  plantao12_scheduler:
+    image: plantao12_app:latest
+    container_name: plantao12_scheduler
+    restart: unless-stopped
+    user: "${APP_UID:-1000}:${APP_GID:-1000}"
+    env_file:
+      - .env
+    environment:
+      DB_HOST: plantao12_mysql
+      DB_PORT: "3306"
+      REDIS_HOST: plantao12_redis
+    entrypoint: []
+    command: >
+      sh -c "while true; do
+        php artisan schedule:run --verbose --no-interaction;
+        sleep 60;
+      done"
+    volumes:
+      - plantao12_storage:/var/www/html/storage/app/public
+    healthcheck:
+      test: ["NONE"]
+    logging: *default-logging
+    networks:
+      - plantao12_net
+
+  # ==========================
+  # EVOLUTION API v2 (WhatsApp)
+  # ==========================
+  plantao12_evolution:
+    image: evoapicloud/evolution-api:v2.3.7
+    container_name: plantao12_evolution
+    restart: unless-stopped
+    depends_on:
+      plantao12_mysql:
+        condition: service_healthy
+      plantao12_redis:
+        condition: service_healthy
+    ports:
+      - "${EVOLUTION_BIND_ADDRESS:-0.0.0.0}:8091:8080"
+    environment:
+      SERVER_URL: ${WHATSAPP_API_URL:-http://192.168.1.160:8091}
+      AUTHENTICATION_API_KEY: ${WHATSAPP_EVOLUTION_API_KEY:-amura-local-evo-key-2024}
+      DATABASE_PROVIDER: mysql
+      DATABASE_CONNECTION_URI: "mysql://root:${DB_ROOT_PASSWORD}@plantao12_mysql:3306/evolution_db_237"
+      DATABASE_SAVE_DATA_INSTANCE: "true"
+      DATABASE_SAVE_DATA_NEW_MESSAGE: "false"
+      DATABASE_SAVE_MESSAGE_UPDATE: "false"
+      DATABASE_SAVE_DATA_CONTACTS: "false"
+      DATABASE_SAVE_DATA_CHATS: "false"
+      DATABASE_SAVE_DATA_LABELS: "false"
+      DATABASE_SAVE_DATA_HISTORIC: "false"
+      LOG_LEVEL: DEBUG,INFO,WARN,ERROR,WEBHOOKS
+      LOG_COLOR: "true"
+      LOG_BAILEYS: warn
+      DEL_INSTANCE: "false"
+      QRCODE_LIMIT: "30"
+      QRCODE_EXPIRATION_TIME: "45"
+      CACHE_REDIS_ENABLED: "true"
+      CACHE_REDIS_URI: "redis://plantao12_redis:6379"
+      CACHE_REDIS_PREFIX_KEY: "evolution"
+      CACHE_REDIS_SAVE_INSTANCES: "false"
+      WEBHOOK_GLOBAL_ENABLED: "true"
+      WEBHOOK_GLOBAL_URL: "http://plantao12_app:8080/api/webhook/whatsapp?apikey=${WHATSAPP_EVOLUTION_API_KEY:-amura-local-evo-key-2024}"
+      WEBHOOK_GLOBAL_WEBHOOK_BY_EVENTS: "false"
+      WEBHOOK_EVENTS_MESSAGES_SET: "true"
+      WEBHOOK_EVENTS_MESSAGES_UPSERT: "true"
+    volumes:
+      - plantao12_evolution_data_237:/evolution/instances
+    networks:
+      - plantao12_net
+    logging: *default-logging
+
+  # ==========================
+  # ADMINER (GUI MySQL)
+  # ==========================
+  plantao12_adminer:
+    image: adminer:latest
+    container_name: plantao12_adminer
+    restart: unless-stopped
+    ports:
+      - "${ADMINER_BIND_ADDRESS:-0.0.0.0}:8087:8080"
+    depends_on:
+      - plantao12_mysql
+    networks:
+      - plantao12_net
+    logging: *default-logging
+
+  # ==========================
+  # VITE / FRONTEND
+  # ==========================
+  plantao12_vite:
+    image: node:20-alpine
+    container_name: plantao12_vite
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+      - plantao12_node_modules:/var/www/html/node_modules
+    ports:
+      - "${VITE_BIND_ADDRESS:-0.0.0.0}:5178:5173"
+    env_file:
+      - .env
+    environment:
+      VITE_HOST: 0.0.0.0
+      VITE_PUSHER_APP_KEY: ${PUSHER_APP_KEY:-local}
+      VITE_PUSHER_APP_CLUSTER: ${PUSHER_APP_CLUSTER:-mt1}
+    command: sh -c "npm install && npm run dev -- --host"
+    networks:
+      - plantao12_net
+    logging: *default-logging
+
+  # ==========================
+  # SELENIUM (Testes E2E/Dusk)
+  # ==========================
+  plantao12_selenium:
+    image: selenium/standalone-chrome:latest
+    container_name: plantao12_selenium
+    restart: unless-stopped
+    shm_size: 2gb
+    networks:
+      - plantao12_net
+    logging: *default-logging
+
+volumes:
+  plantao12_node_modules:
+  plantao12_evolution_data_237:
+  plantao12_storage:
+

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Capa — Manual Amura Sistemas</title>
+<style>
+:root{
+  --primary:#F26522;
+  --secondary:#452463;
+}
+@page { size: A4; margin: 0; }
+*{ box-sizing: border-box; margin: 0; padding: 0; }
+html, body{ width: 210mm; height: 297mm; }
+body{ font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+.cover{
+  position: relative;
+  width: 210mm;
+  height: 297mm;
+  background: linear-gradient(135deg, #452463 0%, #2A1240 100%);
+  color: #fff;
+  overflow: hidden;
+}
+.stripe-top{ position:absolute; top:0; left:0; right:0; height:14mm; background:var(--primary); }
+.stripe-bottom{ position:absolute; bottom:0; left:0; right:0; height:10mm; background:var(--primary); }
+.blob{ position:absolute; width:520px; height:520px; border-radius:50%; pointer-events:none; }
+.blob.tl{ top:-200px; left:-160px; background: radial-gradient(circle at center, rgba(242,101,34,0.28), transparent 70%); }
+.blob.br{ bottom:-190px; right:-130px; background: radial-gradient(circle at center, rgba(0,149,235,0.20), transparent 70%); }
+
+.cover-inner{
+  position:absolute;
+  top:34mm; left:25mm; right:25mm; bottom:26mm;
+  display:flex; flex-direction:column; justify-content:space-between;
+}
+.cover-logo{
+  background:#fff; border-radius:16px;
+  padding:13mm 16mm; text-align:center;
+  width:max-content; margin:0 auto;
+  box-shadow:0 12px 34px rgba(0,0,0,0.28);
+}
+.cover-logo img{ height:62px; display:block; }
+
+.cover-title{ text-align:center; }
+.cover-eyebrow{
+  font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  font-size:11pt; text-transform:uppercase; letter-spacing:0.34em;
+  color:var(--primary); font-weight:700; margin-bottom:12pt;
+}
+.cover-title h1{
+  font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  font-size:46pt; font-weight:900; color:#fff; line-height:1.05;
+  letter-spacing:-0.01em; margin-bottom:14pt;
+}
+.cover-title h1 span{ color:var(--primary); }
+.cover-subtitle{
+  font-size:14pt; font-weight:300; color:rgba(255,255,255,0.85);
+  max-width:135mm; margin:0 auto; line-height:1.45;
+}
+
+.cover-meta{ display:flex; justify-content:space-between; align-items:flex-end; gap:18mm; }
+.cover-meta .block{ flex:1; }
+.cover-meta .label{
+  font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  font-size:8.5pt; text-transform:uppercase; letter-spacing:0.2em;
+  color:var(--primary); font-weight:700; margin-bottom:5pt;
+}
+.cover-meta .value{ font-size:13pt; font-weight:600; color:#fff; }
+</style>
+</head>
+<body>
+  <div class="cover">
+    <div class="stripe-top"></div>
+    <div class="stripe-bottom"></div>
+    <div class="blob tl"></div>
+    <div class="blob br"></div>
+
+    <div class="cover-inner">
+      <div class="cover-logo">
+        <img src="./assets/logo-amura.png" alt="Amura Sistemas">
+      </div>
+
+      <div class="cover-title">
+        <div class="cover-eyebrow">Manual do Usuário</div>
+        <h1>Sistema de <span>Suporte</span><br>e Atendimento</h1>
+        <p class="cover-subtitle">
+          Guia completo para uso do painel do atendente,
+          do painel administrativo e do CRM.
+        </p>
+      </div>
+
+      <div class="cover-meta">
+        <div class="block">
+          <div class="label">Versão</div>
+          <div class="value">2.0</div>
+        </div>
+        <div class="block" style="text-align:center;">
+          <div class="label">Edição</div>
+          <div class="value">Setembro · 2026</div>
+        </div>
+        <div class="block" style="text-align:right;">
+          <div class="label">Publicado por</div>
+          <div class="value">Amura Sistemas</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

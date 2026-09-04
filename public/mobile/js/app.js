@@ -78,8 +78,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         initShiftControls();
         initSyncSettings();
 
-        // Carregar configurações locais salvas
-        state.serverUrl = await window.db.getSetting('server_url', window.location.origin);
+        // Carregar configurações locais salvas (URL padrão inteligente para PWA e APK)
+        const defaultServer = (window.location.origin.startsWith('http://') && !window.location.origin.includes('localhost'))
+            ? window.location.origin
+            : 'http://192.168.0.198:8095';
+
+        state.serverUrl = await window.db.getSetting('server_url', defaultServer);
         document.getElementById('serverUrlInput').value = state.serverUrl;
 
         state.activeAgentId = await window.db.getSetting('active_agent_id', 1);

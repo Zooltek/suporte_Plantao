@@ -1,0 +1,9 @@
+{
+  "appId": "br.com.amura.plantao",
+  "appName": "Amura Plantão",
+  "webDir": "public/mobile",
+  "bundledWebRuntime": false,
+  "server": {
+    "cleartext": true
+  }
+}

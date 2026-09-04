@@ -91,6 +91,28 @@ Localizado em `/public/mobile/`, desenvolvido em **Vanilla JS modular + CSS mode
   * **Sincronização Silenciosa em Background:** Baixa clientes e categorias automaticamente ao conectar na rede sem exigir clique manual do técnico;
   * **Fallbacks Offline:** Se o técnico abrir o app em casa sem ter baixado a base da empresa, o app disponibiliza categorias padrão e permite digitar o cliente manualmente.
 
+### 📱 Dupla Modalidade de Uso (PWA ou APK Nativo)
+
+O aplicativo foi arquitetado para suportar **as duas formas simultaneamente a partir da mesma base de código**:
+
+| Modalidade | Como Usar | Vantagens |
+| :--- | :--- | :--- |
+| **PWA (Navegador Web)** | Acessar `http://<IP_LOCAL>:8095/mobile` no Chrome/Safari e tocar em *"Adicionar à tela inicial"*. | • Sem necessidade de compilar ou instalar APK.<br>• Atualizações instantâneas no servidor refletem na hora para todos. |
+| **APK Nativo (Android)** | Compilado via **Capacitor** presente na pasta `android/`. O arquivo `.apk` pode ser enviado via WhatsApp/USB para o técnico instalar. | • App nativo independente sem barra de navegação.<br>• Ícone e splash screen próprios da Amura.<br>• `usesCleartextTraffic="true"` liberado para intranet HTTP. |
+
+#### Comandos para Gerar/Atualizar o APK Android:
+```bash
+# 1. Sincronizar alterações feitas em public/mobile com o projeto Android
+npm run cap:sync
+
+# 2. Abrir o projeto no Android Studio para gerar o APK
+npm run cap:open
+
+# 3. Ou gerar o APK debug diretamente por linha de comando (Gradle):
+cd android && ./gradlew assembleDebug
+# O APK compilado estará em: android/app/build/outputs/apk/debug/app-debug.apk
+```
+
 ---
 
 ## 📊 Painel Administrativo & Relatórios Locais

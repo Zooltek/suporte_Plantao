@@ -6,10 +6,15 @@
         "build": "vite build",
         "dev": "vite",
         "test:e2e": "playwright test",
-        "test:js": "node --test tests/js/*.test.mjs"
+        "test:js": "node --test tests/js/*.test.mjs",
+        "cap:sync": "cap sync android",
+        "cap:open": "cap open android"
     },
     "devDependencies": {
         "@alpinejs/mask": "^3.15.8",
+        "@capacitor/android": "^8.5.1",
+        "@capacitor/cli": "^8.5.1",
+        "@capacitor/core": "^8.5.1",
         "@playwright/test": "^1.59.1",
         "@tailwindcss/forms": "^0.5.2",
         "@tailwindcss/vite": "^4.0.0",

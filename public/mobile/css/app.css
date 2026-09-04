@@ -463,6 +463,11 @@ textarea.form-control {
     gap: 10px;
 }
 
+input[type="datetime-local"] {
+    color-scheme: dark;
+    max-width: 100%;
+}
+
 .time-box-btn {
     margin-top: 6px;
 }

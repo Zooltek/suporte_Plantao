@@ -377,20 +377,18 @@ async function refreshDashboard() {
     let filteredAttendances = allAttendances;
     const now = new Date();
 
-    if (periodFilter === 'today') {
+    if (periodFilter === 'shift' || periodFilter === 'today') {
         const todayStr = now.toISOString().slice(0, 10);
-        filteredAttendances = allAttendances.filter(a => a.started_at.startsWith(todayStr));
-    } else if (periodFilter === 'shift') {
         if (state.activeShift) {
-            // Atendimentos associados ao plantão atual ou que ocorreram após o início do plantão
+            // Atendimentos associados ao plantão atual ou do dia
             filteredAttendances = allAttendances.filter(a => 
                 a.shift_uuid === state.activeShift.uuid || 
+                a.started_at.startsWith(todayStr) ||
                 new Date(a.started_at) >= new Date(state.activeShift.started_at)
             );
         } else {
-            // Se nenhum plantão ativo, considera as últimas 24h
-            const last24h = new Date(now.getTime() - 24 * 3600000);
-            filteredAttendances = allAttendances.filter(a => new Date(a.started_at) >= last24h);
+            // Regime de escala automática: considera os atendimentos do dia de hoje
+            filteredAttendances = allAttendances.filter(a => a.started_at.startsWith(todayStr));
         }
     } else if (periodFilter === 'month') {
         const monthStr = now.toISOString().slice(0, 7);
@@ -594,26 +592,6 @@ function initTimeControls() {
     btnNowEnd.addEventListener('click', () => {
         timeEnded.value = toLocalDatetimeString(new Date());
     });
-
-    // Botões para retroceder 1 dia (Ontem)
-    const btnYesterdayStart = document.getElementById('btnYesterdayStart');
-    const btnYesterdayEnd = document.getElementById('btnYesterdayEnd');
-
-    if (btnYesterdayStart) {
-        btnYesterdayStart.addEventListener('click', () => {
-            const current = new Date(timeStarted.value || new Date());
-            current.setDate(current.getDate() - 1);
-            timeStarted.value = toLocalDatetimeString(current);
-        });
-    }
-
-    if (btnYesterdayEnd) {
-        btnYesterdayEnd.addEventListener('click', () => {
-            const current = new Date(timeEnded.value || new Date());
-            current.setDate(current.getDate() - 1);
-            timeEnded.value = toLocalDatetimeString(current);
-        });
-    }
 
     // Ouvinte para filtro de período no resumo de horas
     const periodSelect = document.getElementById('selPeriodFilter');
